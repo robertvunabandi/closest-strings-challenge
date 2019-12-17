@@ -1,0 +1,9 @@
+.cflags
+
+.vscode
+
+# ignore all output files
+*.o
+
+# ignore binaries (must add manually)
+cs
