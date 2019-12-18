@@ -10,6 +10,7 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "./closest_strings.h"
 #include "./util.h"
 
 #include "./cs.h"
@@ -137,8 +138,6 @@ int getMValue(int argc, char **argv) {
 
 bool is_word_valid(char *word, int m) {
   // word must have the right length.
-
-  DEBUG_PRINT("-- word: %s, word length: %lu\n", word, strlen(word));
   if (strlen(word) != m) {
     fprintf(
       stderr, 
@@ -165,6 +164,8 @@ bool is_word_valid(char *word, int m) {
       );
       return false;
     }
+    // convert to make this easier to work with.
+    word[i] = tolower(word[i]);
   }
   return true;
 }
@@ -247,6 +248,9 @@ int main(int argc, char** argv) {
 
   // Read and interpret the command line arguments.
   printf("== RUNNING CLOSEST STRING PROGRAM ==\n\n");
+
+  // TODO: Prevent invalid flags and double flags
+
   const int m = getMValue(argc, argv);
   if (m == -1) {
     fprintf(stderr, "%s\n", USAGE);

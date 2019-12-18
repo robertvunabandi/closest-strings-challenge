@@ -11,11 +11,11 @@ CFLAGS := -std=gnu11 -g -Wall
 LDFLAGS := 
 
 # put headers here
-HEADERS := cs.h util.h
+HEADERS := cs.h util.h closest_strings.h distances.h
 
 # If you add a new file called "filename.c", add
 # "filename.o \" to this list.
-OBJS := cs.o util.o
+OBJS := cs.o util.o closest_strings.o distances.o
 
 ifeq ($(DEBUG),1)
 	CFLAGS += -DDEBUG -O0
