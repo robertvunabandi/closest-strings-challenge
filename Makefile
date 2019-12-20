@@ -1,5 +1,8 @@
+.DEFAULT_GOAL := cs
+
 TARGETS := \
-		cs
+		cs \
+		tests
 
 CC := clang
 # The -std flag defaults to "gnu11" if not set. However, here 
@@ -11,11 +14,13 @@ CFLAGS := -std=gnu11 -g -Wall
 LDFLAGS := 
 
 # put headers here
-HEADERS := cs.h util.h closest_strings.h distances.h
+HEADERS := cs.h util.h closest_strings.h distances.h tests.h colors.h
 
 # If you add a new file called "filename.c", add
 # "filename.o \" to this list.
-OBJS := cs.o util.o closest_strings.o distances.o
+CS_OBJ := cs.o
+OBJS := util.o closest_strings.o distances.o
+TEST_OBJS := tests.o
 
 ifeq ($(DEBUG),1)
 	CFLAGS += -DDEBUG -O0
@@ -33,8 +38,11 @@ endif
 
 all: $(TARGETS)
 
-cs: $(OBJS)
-	$(CC) $(LDFLAGS) $(OBJS) -o $@
+cs: $(CS_OBJ) $(OBJS)
+	$(CC) $(LDFLAGS) $(CS_OBJ) $(OBJS) -o $@
+
+tests: $(OBJS) $(TEST_OBJS)
+	$(CC) $(LDFLAGS) $(OBJS) $(TEST_OBJS) -o $@
 
 # compile objects
 
@@ -43,4 +51,4 @@ cs: $(OBJS)
 	$(CC) $(CFLAGS) -c $*.c -o $@
 
 clean:
-	$(RM) $(TARGETS) $(OBJS) *.pyc
+	$(RM) $(TARGETS) $(OBJS) $(TEST_OBJS) *.pyc
