@@ -21,7 +21,7 @@ void Test_group(char *test_group_name);
 /**
  * Runs the test
  */
-bool Test_run(bool (*test_f)(), char *test_f_name);
+void Test_run(bool (*test_f)(), char *test_f_name);
 
 // The functions below are indicated as @private. This means that the
 // client is not supposed to call them. Only the testing framework does.

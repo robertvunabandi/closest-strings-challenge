@@ -7,6 +7,8 @@
 #include <stdbool.h>
 #include <time.h>
 
+#define ALWAYS_INLINE __attribute__((always_inline))
+
 // Defining a way to debug print, which only work when 
 // debug is defined. Found this on stack overflow:
 // https://stackoverflow.com/questions/1941307/debug-print-macro-in-c
