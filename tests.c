@@ -25,6 +25,9 @@
 
 // Here's a sample test that always passes.
 bool testSampleTest() {
+  Test_ensureTrue(true);
+  Test_ensureFalse(false);
+  Test_ensureEqualInt(1, 1);
   return true;
 }
 
@@ -32,26 +35,7 @@ bool testSampleTest() {
 // Testing `distances.h` Definitions
 //
 
-ALWAYS_INLINE void failDistance(
-  const char *test_f_name, 
-  int line_number,
-  char *distance_fname, 
-  char *s1,
-  char *s2, 
-  int expected, 
-  int result
-) {
-  printf("\n");
-  printf("    %s[%s:%d]%s\n", C_BOLD_WHITE, test_f_name, line_number, C_NC);
-  printf(
-    "      %s%s%s failed for strings %s{\"%s\", \"%s\"}%s\n",
-    C_BOLD_BLACK, distance_fname, C_NC,
-    C_BOLD_WHITE, s1, s2, C_NC
-  );
-  printf("      Expected %s%d%s\n", C_BOLD_CYAN, expected, C_NC);
-  printf("      Received %s%d%s\n", C_BOLD_RED, result, C_NC);
-  printf("\n");
-}
+#define HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2) "%s%s%s failed for strings %s{\"%s\", \"%s\"}%s\n", C_BOLD_BLACK, "hamming_distance", C_NC, C_BOLD_WHITE, s1, s2, C_NC
 
 bool testHammingDistanceZero() {
   // expected is the same everywhere
@@ -60,35 +44,22 @@ bool testHammingDistanceZero() {
   char *s1 = "h";
   char *s2 = "h";
   int result = hamming_distance(s1, s2, 1);
-  if (result != expected) {
-    failDistance(__func__, __LINE__, "hamming_distance", s1, s2, expected, result);
-    return false;
-  };
+  Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
   s1 = "he";
   s2 = "he";
   result = hamming_distance(s1, s2, 2);
-  if (result != expected) {
-    failDistance(__func__, __LINE__, "hamming_distance", s1, s2, expected, result);
-    return false;
-  };
+  Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
   s1 = "hello";
   s2 = "hello";
   result = hamming_distance(s1, s2, 5);
-  if (result != expected) {
-    failDistance(__func__, __LINE__, "hamming_distance", s1, s2, expected, result);
-    return false;
-  };
-
+  Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
   s1 = "sdglerglktgergposvdwef";
   s2 = "sdglerglktgergposvdwef";
   result = hamming_distance(s1, s2, 22);
-  if (result != expected) {
-    failDistance(__func__, __LINE__, "hamming_distance", s1, s2, expected, result);
-    return false;
-  };
+  Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
   return true;
 }
@@ -100,34 +71,22 @@ bool testHammingDistanceOne() {
   char *s1 = "h";
   char *s2 = "e";
   int result = hamming_distance(s1, s2, 1);
-  if (result != expected) {
-    failDistance(__func__, __LINE__, "hamming_distance", s1, s2, expected, result);
-    return false;
-  };
+  Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
   s1 = "he";
   s2 = "hb";
   result = hamming_distance(s1, s2, 2);
-  if (result != expected) {
-    failDistance(__func__, __LINE__, "hamming_distance", s1, s2, expected, result);
-    return false;
-  };
+  Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
   s1 = "hello";
   s2 = "hexlo";
   result = hamming_distance(s1, s2, 5);
-  if (result != expected) {
-    failDistance(__func__, __LINE__, "hamming_distance", s1, s2, expected, result);
-    return false;
-  };
+  Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
   s1 = "hello";
   s2 = "heloo";
   result = hamming_distance(s1, s2, 5);
-  if (result != expected) {
-    failDistance(__func__, __LINE__, "hamming_distance", s1, s2, expected, result);
-    return false;
-  };
+  Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
   return true;
 }
@@ -137,10 +96,8 @@ bool testHammingDistanceRandom1() {
   char *s2 = "eeloa";
   int result = hamming_distance(s1, s2, 5);
   int expected = 3;
-  if (result != expected) {
-    failDistance(__func__, __LINE__, "hamming_distance", s1, s2, expected, result);
-    return false;
-  };
+  Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
+
   return true;
 }
 
@@ -149,10 +106,8 @@ bool testHammingDistanceRandom2() {
   char *s2 = "eeloathera";
   int result = hamming_distance(s1, s2, 10);
   int expected = 4;
-  if (result != expected) {
-    failDistance(__func__, __LINE__, "hamming_distance", s1, s2, expected, result);
-    return false;
-  };
+  Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
+
   return true;
 }
 
@@ -162,10 +117,8 @@ bool testHammingDistanceRandom3() {
   char *s2 = "coffeaandtee";
   int result = hamming_distance(s1, s2, 12);
   int expected = 2;
-  if (result != expected) {
-    failDistance(__func__, __LINE__, "hamming_distance", s1, s2, expected, result);
-    return false;
-  };
+  Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
+
   return true;
 }
 
@@ -175,10 +128,8 @@ bool testHammingDistanceRandom4() {
   char *s2 = "rrrrrrrrrraae";
   int result = hamming_distance(s1, s2, 13);
   int expected = 12;
-  if (result != expected) {
-    failDistance(__func__, __LINE__, "hamming_distance", s1, s2, expected, result);
-    return false;
-  };
+  Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
+
   return true;
 }
 

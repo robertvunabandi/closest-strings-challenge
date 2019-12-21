@@ -9,7 +9,9 @@
 #define PASSED_EXIT_CODE 0
 #define FAILED_EXIT_CODE 1
 
-// Testing API
+///
+/// Testing API
+///
 
 /**
  * This declares a new test group. Each groups is essentially a set
@@ -65,3 +67,100 @@ void Test_fail(char *test_f_name);
  * @private
  */
 bool Test_conclude();
+
+///
+/// Testing Macros:
+/// Instead of using "assert", we're using "ensure" because these 
+/// macros don't actually "assert" anything. They check that they
+/// match and if they don't, we return false.
+///
+
+#define Test_ensureTrue(boolean) {                                           \
+  if (!boolean) {                                                            \
+    fprintf(stderr, "\n");                                                   \
+    fprintf(                                                                 \
+      stderr, "    %s[%s:%s:%d]%s\n",                                        \
+      C_BOLD_WHITE, __FILE__, __func__, __LINE__, C_NC                       \
+    );                                                                       \
+    fprintf(stderr, "      Expected %strue%s\n", C_BOLD_CYAN, C_NC);         \
+    fprintf(stderr, "      Received %sfalse%s\n", C_BOLD_RED, C_NC);         \
+    fprintf(stderr, "\n");                                                   \
+    return false;                                                            \
+  }                                                                          \
+}
+
+#define Test_ensureTrueMsg(boolean, ...) {                                   \
+  if (!boolean) {                                                            \
+    fprintf(stderr, "\n");                                                   \
+    fprintf(                                                                 \
+      stderr, "    %s[%s:%s:%d]%s\n",                                        \
+      C_BOLD_WHITE, __FILE__, __func__, __LINE__, C_NC                       \
+    );                                                                       \
+    fprintf(stderr, "      ");                                               \
+    fprintf(stderr, __VA_ARGS__);                                            \
+    fprintf(stderr, "      Expected %strue%s\n", C_BOLD_CYAN, C_NC);         \
+    fprintf(stderr, "      Received %sfalse%s\n", C_BOLD_RED, C_NC);         \
+    fprintf(stderr, "\n");                                                   \
+    return false;                                                            \
+  }                                                                          \
+}
+
+#define Test_ensureFalse(boolean) {                                          \
+  if (boolean) {                                                             \
+    fprintf(stderr, "\n");                                                   \
+    fprintf(                                                                 \
+      stderr, "    %s[%s:%s:%d]%s\n",                                        \
+      C_BOLD_WHITE, __FILE__, __func__, __LINE__, C_NC                       \
+    );                                                                       \
+    fprintf(stderr, "      Expected %sfalse%s\n", C_BOLD_CYAN, C_NC);        \
+    fprintf(stderr, "      Received %strue%s\n", C_BOLD_RED, C_NC);          \
+    fprintf(stderr, "\n");                                                   \
+    return false;                                                            \
+  }                                                                          \
+}
+
+#define Test_ensureFalseMsg(boolean, ...) {                                  \
+  if (boolean) {                                                             \
+    fprintf(stderr, "\n");                                                   \
+    fprintf(                                                                 \
+      stderr, "    %s[%s:%s:%d]%s\n",                                        \
+      C_BOLD_WHITE, __FILE__, __func__, __LINE__, C_NC                       \
+    );                                                                       \
+    fprintf(stderr, "      ");                                               \
+    fprintf(stderr, __VA_ARGS__);                                            \
+    fprintf(stderr, "      Expected %sfalse%s\n", C_BOLD_CYAN, C_NC);        \
+    fprintf(stderr, "      Received %strue%s\n", C_BOLD_RED, C_NC);          \
+    fprintf(stderr, "\n");                                                   \
+    return false;                                                            \
+  }                                                                          \
+}
+
+#define Test_ensureEqualInt(expected, received) {                            \
+  if (received != expected) {                                                \
+    fprintf(stderr, "\n");                                                   \
+    fprintf(                                                                 \
+      stderr, "    %s[%s:%s:%d]%s\n",                                        \
+      C_BOLD_WHITE, __FILE__, __func__, __LINE__, C_NC                       \
+    );                                                                       \
+    fprintf(stderr, "      Expected %s%d%s\n", C_BOLD_CYAN, expected, C_NC); \
+    fprintf(stderr, "      Received %s%d%s\n", C_BOLD_RED, received, C_NC);  \
+    fprintf(stderr, "\n");                                                   \
+    return false;                                                            \
+  }                                                                          \
+}
+
+#define Test_ensureEqualIntMsg(expected, received, ...) {                    \
+  if (received != expected) {                                                \
+    fprintf(stderr, "\n");                                                   \
+    fprintf(                                                                 \
+      stderr, "    %s[%s:%s:%d]%s\n",                                        \
+      C_BOLD_WHITE, __FILE__, __func__, __LINE__, C_NC                       \
+    );                                                                       \
+    fprintf(stderr, "      ");                                               \
+    fprintf(stderr, __VA_ARGS__);                                            \
+    fprintf(stderr, "      Expected %s%d%s\n", C_BOLD_CYAN, expected, C_NC); \
+    fprintf(stderr, "      Received %s%d%s\n", C_BOLD_RED, received, C_NC);  \
+    fprintf(stderr, "\n");                                                   \
+    return false;                                                            \
+  }                                                                          \
+}
