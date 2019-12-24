@@ -21,9 +21,9 @@ int hammingDistance(char *s1, char *s2, int m) {
 }
 
 typedef struct SortedChar {
-  char first;  // this appears before or same as `second` in the alphabet
-  char second; // this appears same or after `first` in the alphabet
-} SortedChar;  // NOTE: these are for length up to ALPHABET_LENGTH
+  char first;   // this appears before or same as `second` in the alphabet
+  char second;  // this appears same or after `first` in the alphabet
+} SortedChar;   // NOTE: these are for length up to ALPHABET_LENGTH
 SortedChar getSortedChar(char s1, char s2);
 int relativeCharDistance(char first, char second);
 
@@ -39,7 +39,7 @@ int relativeDistance(char *s1, char *s2, int m) {
 
 /**
  * This method is very self explanatory.
- * 
+ *
  * Precondition:
  * - s1 and s2 are in ALPHABET (i.e., lowercase alphanumeric)
  */
@@ -47,31 +47,31 @@ SortedChar getSortedChar(char s1, char s2) {
   // Time Complexity: ALPHABET_LENGTH
   char first = '\0';
   char second = '\0';
-# ifdef DEBUG
+#ifdef DEBUG
   bool broke = false;
-# endif
+#endif
   for (int i = 0; i < ALPHABET_LENGTH; i++) {
     if (s1 == ALPHABET[i]) {
       first = s1;
       second = s2;
-# ifdef DEBUG
+#ifdef DEBUG
       broke = true;
-# endif
+#endif
       break;
     }
     if (s2 == ALPHABET[i]) {
       first = s2;
       second = s1;
-# ifdef DEBUG
+#ifdef DEBUG
       broke = true;
-# endif
+#endif
       break;
     }
   }
-# ifdef DEBUG
+#ifdef DEBUG
   assert(broke);
-# endif
-  return (SortedChar) {.first=first, .second=second};
+#endif
+  return (SortedChar) {.first = first, .second = second};
 }
 
 int rotRelativeDistance(char *s1, char *s2, int m) {
@@ -88,7 +88,7 @@ int rotRelativeDistance(char *s1, char *s2, int m) {
 
 int relativeCharDistance(char first, char second) {
   // Time Complexity: WRAPPED_ALPHABET_LENGTH
-  int firstIdx = -1; 
+  int firstIdx = -1;
   int secondIdx = -1;
 
   for (int i = 0; i < WRAPPED_ALPHABET_LENGTH; i++) {

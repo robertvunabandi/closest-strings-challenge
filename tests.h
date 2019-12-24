@@ -33,7 +33,7 @@ void Test_run(bool (*test_f)(), char *test_f_name);
 /**
  * This is called at the beginning of the `main` function in the test
  * binary to begin testing. This would set up any necessary variable
- * needed to start testing, so it must be called before everything 
+ * needed to start testing, so it must be called before everything
  * else.
  * @private
  */
@@ -45,14 +45,13 @@ void Test_begin();
  */
 void Test_start(char *test_f_name);
 
-
 /**
- * Tells the program that the given test passed. This may result in 
+ * Tells the program that the given test passed. This may result in
  * printing things in the terminal and updating global variables. This
  * is called inside Test_run.
  * @private
  */
-void Test_pass(char *test_f_name); 
+void Test_pass(char *test_f_name);
 
 /**
  * Similarly, this tells the program that the given test failed. It's
@@ -72,7 +71,7 @@ bool Test_conclude();
 
 ///
 /// Testing Macros:
-/// Instead of using "assert", we're using "ensure" because these 
+/// Instead of using "assert", we're using "ensure" because these
 /// macros don't actually "assert" anything. They check that they
 /// match and if they don't, we return false.
 ///

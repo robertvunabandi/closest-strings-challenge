@@ -15,9 +15,9 @@
 // How to Test:
 // Here's how testing this works. Write a function that
 // takes no parameter and returns a boolean. That function
-// is a test, so by convention, name it something like 
-// "test<TrueTestName>". Then, scroll all the way to the 
-// `main(int argc, char *argv[])` function section and add 
+// is a test, so by convention, name it something like
+// "test<TrueTestName>". Then, scroll all the way to the
+// `main(int argc, char *argv[])` function section and add
 // the line `Test_run(*test<TrueTestName>, "test<TrueTestName>")`
 // wherever appropriate.
 //
@@ -34,9 +34,15 @@ bool testSampleTest() {
 // Testing `distances.h` Definitions
 //
 
-#define HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2) "%s%s%s failed for strings %s{\"%s\", \"%s\"}%s\n", C_BOLD_BLACK, "hammingDistance", C_NC, C_BOLD_WHITE, s1, s2, C_NC
-#define RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2) "%s%s%s failed for strings %s{\"%s\", \"%s\"}%s\n", C_BOLD_BLACK, "relvativeDistance", C_NC, C_BOLD_WHITE, s1, s2, C_NC
-#define ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2) "%s%s%s failed for strings %s{\"%s\", \"%s\"}%s\n", C_BOLD_BLACK, "rotRelvativeDistance", C_NC, C_BOLD_WHITE, s1, s2, C_NC
+#define HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2)                                         \
+  "%s%s%s failed for strings %s{\"%s\", \"%s\"}%s\n", C_BOLD_BLACK,                  \
+    "hammingDistance", C_NC, C_BOLD_WHITE, s1, s2, C_NC
+#define RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2)                                        \
+  "%s%s%s failed for strings %s{\"%s\", \"%s\"}%s\n", C_BOLD_BLACK,                  \
+    "relvativeDistance", C_NC, C_BOLD_WHITE, s1, s2, C_NC
+#define ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2)                                    \
+  "%s%s%s failed for strings %s{\"%s\", \"%s\"}%s\n", C_BOLD_BLACK,                  \
+    "rotRelvativeDistance", C_NC, C_BOLD_WHITE, s1, s2, C_NC
 
 bool testHammingDistanceZero() {
   // expected is the same everywhere
@@ -112,7 +118,6 @@ bool testHammingDistanceRandom2() {
   return true;
 }
 
-
 bool testHammingDistanceRandom3() {
   char *s1 = "coffeeandtea";
   char *s2 = "coffeaandtee";
@@ -122,7 +127,6 @@ bool testHammingDistanceRandom3() {
 
   return true;
 }
-
 
 bool testHammingDistanceRandom4() {
   char *s1 = "aaaaaaabbbbbe";
@@ -401,7 +405,6 @@ bool testRotRelativeDistanceRandom4() {
 // Make sure to add tests here so that they can be ran.
 //
 
-
 int main(int argc, char *argv[]) {
   // Begin testing
   Test_begin();
@@ -444,9 +447,9 @@ int main(int argc, char *argv[]) {
 
 //
 // Header Definitions
-// See `tests.h` for details on what these functions do. 
+// See `tests.h` for details on what these functions do.
 // Modify with caution.
-// 
+//
 
 static int numTests = 0;
 static int numTestsPassed = 0;
@@ -460,7 +463,7 @@ void Test_begin() {
   clock_gettime(CLOCK_MONOTONIC, &t_start);
 }
 
-// This method is not in the public api, but it's here for making it easier 
+// This method is not in the public api, but it's here for making it easier
 // to account for passed groups.
 void Test_group_conclude() {
   if (numGroups == 0) {
@@ -534,14 +537,14 @@ bool Test_conclude() {
   Test_group_conclude();
 
   // find other variables
-  int numGroupsFailed =  numGroups - numGroupsPassed;
+  int numGroupsFailed = numGroups - numGroupsPassed;
   int numTestsFailed = numTests - numTestsPassed;
 
   // Here, we're going to display the final results the same way that
   // jest, the open source javascript testing API, does it. See:
   // https://jestjs.io/docs/en/getting-started
   printf("\n");
-  
+
   // Instead of "Test Suites", we're going to use "Test Groups"
   printf("%sTest Groups:%s ", C_BOLD_WHITE, C_NC);
   if (numGroupsFailed > 0) {

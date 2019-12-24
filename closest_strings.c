@@ -18,21 +18,21 @@
 //
 
 /**
- * Finds the next word in an arbitrary order of words given the 
+ * Finds the next word in an arbitrary order of words given the
  * current word. This next word is set inside wordOutput. wordOutput
  * may be the same pointer as currentWord. This will return true
  * whenever the next word outputted is valid and false otherwise.
- * 
- * Words are ordered such that if a < b, then in order to get the b, 
- * we need to call nextWord(...(nextWord(a))) enough time such that 
+ *
+ * Words are ordered such that if a < b, then in order to get the b,
+ * we need to call nextWord(...(nextWord(a))) enough time such that
  * we get to b eventually.
- * 
+ *
  * Precondition:
  * - currentWord is lowercase alphanumeric.
  * - There is a strict order. If nextWord(a) = b and nextWord(b) = c,
  *   then a < b and b < c. This order is also transitive.
  * Postcondition:
- * - There is a maximum word we get from calling getMaxWord(length). If 
+ * - There is a maximum word we get from calling getMaxWord(length). If
  *   currentWord is the maxWord, this will return false. Otherwise, it
  *   will always return the next word.
  */
@@ -41,14 +41,14 @@ void setMinWord(int length, char *wordOutput);
 void setMaxWord(int length, char *wordOutput);
 
 //
-// Main function: closest_string 
+// Main function: closest_string
 //
 
 void closest_string(
-  char **words, 
-  const int num_words, 
+  char **words,
+  const int num_words,
   const int m,
-  int (*distance)(char *, char*, int),
+  int (*distance)(char *, char *, int),
   ClosestStringResult *csr
 ) {
   assert(csr->k == -1);
@@ -88,9 +88,9 @@ void closest_string(
 // Definitions of forward references
 //
 
-// Increment the character at index and returns true if we need to 
+// Increment the character at index and returns true if we need to
 // carry over.
-bool incrementCharacter(char* word, int index) {
+bool incrementCharacter(char *word, int index) {
   char character = word[index];
   if (character == ALPHABET[ALPHABET_LENGTH - 1]) {
     word[index] = ALPHABET[0];
@@ -156,7 +156,7 @@ ClosestStringResult *CSR_allocate(int m) {
   return csr;
 }
 
-void CSR_free(ClosestStringResult * csr) {
+void CSR_free(ClosestStringResult *csr) {
   free(csr->s);
   free(csr);
 }

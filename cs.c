@@ -23,10 +23,10 @@
 char **allocate_words(int argc, const int m) {
   // Make an array that is sufficiently large to fit all the
   // words of size m. There shouldn't be more words than the
-  // total number of arguments. All words should be of the 
-  // same size m, and each word is simply a sequence of 
+  // total number of arguments. All words should be of the
+  // same size m, and each word is simply a sequence of
   // alphabetical characters.
-  char **words = malloc(argc * sizeof(char*));
+  char **words = malloc(argc * sizeof(char *));
   for (int i = 0; i < argc; i++) {
     words[i] = malloc(m * sizeof(char));
   }
@@ -94,20 +94,20 @@ void displayHelp() {
 /**
  * @param argc - number of arguments given
  * @param argv - an array of length argc of arguments given to the program
- * @return the value of the flag `-l` or `--length` if passed in, 
- *         DEFAULT_M if not passed in, and `-1` if the value of the 
+ * @return the value of the flag `-l` or `--length` if passed in,
+ *         DEFAULT_M if not passed in, and `-1` if the value of the
  *         flag was invalid. It must be a positive, non-zero integer.
  */
 int getMValue(int argc, char **argv) {
   // start at 1 because index 0 is the program `./cs` itself
   int m_idx = 1;
   int length = DEFAULT_M;
-  while(m_idx < argc) {
+  while (m_idx < argc) {
     char *flag = argv[m_idx];
     if (String_equal(flag, "-l") || String_equal(flag, "--length")) {
       if (m_idx == argc - 1) {
         fprintf(
-          stderr, 
+          stderr,
           (
             "Error: Received length flag `%s`, but no argument "
             "value for length given.\n"
@@ -138,7 +138,7 @@ bool is_word_valid(char *word, int m) {
   // word must have the right length.
   if (strlen(word) != m) {
     fprintf(
-      stderr, 
+      stderr,
       (
         "Error: The given word `%s` is invalid because it "
         "doesn't have length %d.\n"
@@ -153,7 +153,7 @@ bool is_word_valid(char *word, int m) {
   for (int i = 0; i < m; i++) {
     if (!isalpha(word[i])) {
       fprintf(
-        stderr, 
+        stderr,
         (
           "Error: The given word `%s` is invalid because "
           "it contains non-alphabetical characters.\n"
@@ -173,8 +173,8 @@ bool is_word_valid(char *word, int m) {
  *                 argv.
  * @param m - how long each words are going to be. See README.
  * @param argc - number of arguments given
- * @param argv - an array of length argc of arguments given to the program. 
- *               the flag `-w` or `--words` must be given, and it must be 
+ * @param argv - an array of length argc of arguments given to the program.
+ *               the flag `-w` or `--words` must be given, and it must be
  *               followed by at least one word of length m. This flag cannot
  *               be passed in twice.
  * @return The number of words from argv added to output, or `-1` if there
@@ -185,7 +185,7 @@ int getWords(char **output, const int m, int argc, char **argv) {
   int w_flag_idx = 1;
   bool inside_w_flag = false;
 
-  while(w_flag_idx < argc) {
+  while (w_flag_idx < argc) {
     if (!inside_w_flag) {
       char *flag = argv[w_flag_idx];
       if (String_equal(flag, "-w") || String_equal(flag, "--words")) {
@@ -216,10 +216,10 @@ int getWords(char **output, const int m, int argc, char **argv) {
 }
 
 void runBenchmark(
-  char **words, 
-  const int num_words, 
+  char **words,
+  const int num_words,
   const int m,
-  int (*distance)(char *, char*, int),
+  int (*distance)(char *, char *, int),
   char *info
 ) {
   struct timespec t_start, t_end;
@@ -238,7 +238,7 @@ void runBenchmark(
   CSR_free(csr);
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   // Check to see if the help flag was given and display help
   // and exit if given.
   if (hasHelpFlag(argc, argv)) {
@@ -274,7 +274,7 @@ int main(int argc, char** argv) {
   }
   printf("%s}%s\n\n", words[num_words - 1], C_NC);
 
-  // Start running the program, timing each specific distance 
+  // Start running the program, timing each specific distance
   // functions.
   runBenchmark(words, num_words, m, &hammingDistance, "hammingDistance");
   runBenchmark(words, num_words, m, &relativeDistance, "relativeDistance");
