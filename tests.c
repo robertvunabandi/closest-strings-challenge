@@ -35,7 +35,8 @@ bool testSampleTest() {
 // Testing `distances.h` Definitions
 //
 
-#define HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2) "%s%s%s failed for strings %s{\"%s\", \"%s\"}%s\n", C_BOLD_BLACK, "hamming_distance", C_NC, C_BOLD_WHITE, s1, s2, C_NC
+#define HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2) "%s%s%s failed for strings %s{\"%s\", \"%s\"}%s\n", C_BOLD_BLACK, "hammingDistance", C_NC, C_BOLD_WHITE, s1, s2, C_NC
+#define RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2) "%s%s%s failed for strings %s{\"%s\", \"%s\"}%s\n", C_BOLD_BLACK, "relvativeDistance", C_NC, C_BOLD_WHITE, s1, s2, C_NC
 
 bool testHammingDistanceZero() {
   // expected is the same everywhere
@@ -43,22 +44,22 @@ bool testHammingDistanceZero() {
 
   char *s1 = "h";
   char *s2 = "h";
-  int result = hamming_distance(s1, s2, 1);
+  int result = hammingDistance(s1, s2, 1);
   Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
   s1 = "he";
   s2 = "he";
-  result = hamming_distance(s1, s2, 2);
+  result = hammingDistance(s1, s2, 2);
   Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
   s1 = "hello";
   s2 = "hello";
-  result = hamming_distance(s1, s2, 5);
+  result = hammingDistance(s1, s2, 5);
   Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
   s1 = "sdglerglktgergposvdwef";
   s2 = "sdglerglktgergposvdwef";
-  result = hamming_distance(s1, s2, 22);
+  result = hammingDistance(s1, s2, 22);
   Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
   return true;
@@ -70,22 +71,22 @@ bool testHammingDistanceOne() {
 
   char *s1 = "h";
   char *s2 = "e";
-  int result = hamming_distance(s1, s2, 1);
+  int result = hammingDistance(s1, s2, 1);
   Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
   s1 = "he";
   s2 = "hb";
-  result = hamming_distance(s1, s2, 2);
+  result = hammingDistance(s1, s2, 2);
   Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
   s1 = "hello";
   s2 = "hexlo";
-  result = hamming_distance(s1, s2, 5);
+  result = hammingDistance(s1, s2, 5);
   Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
   s1 = "hello";
   s2 = "heloo";
-  result = hamming_distance(s1, s2, 5);
+  result = hammingDistance(s1, s2, 5);
   Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
   return true;
@@ -94,7 +95,7 @@ bool testHammingDistanceOne() {
 bool testHammingDistanceRandom1() {
   char *s1 = "hello";
   char *s2 = "eeloa";
-  int result = hamming_distance(s1, s2, 5);
+  int result = hammingDistance(s1, s2, 5);
   int expected = 3;
   Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
@@ -104,7 +105,7 @@ bool testHammingDistanceRandom1() {
 bool testHammingDistanceRandom2() {
   char *s1 = "hellothere";
   char *s2 = "eeloathera";
-  int result = hamming_distance(s1, s2, 10);
+  int result = hammingDistance(s1, s2, 10);
   int expected = 4;
   Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
@@ -115,7 +116,7 @@ bool testHammingDistanceRandom2() {
 bool testHammingDistanceRandom3() {
   char *s1 = "coffeeandtea";
   char *s2 = "coffeaandtee";
-  int result = hamming_distance(s1, s2, 12);
+  int result = hammingDistance(s1, s2, 12);
   int expected = 2;
   Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
 
@@ -126,9 +127,139 @@ bool testHammingDistanceRandom3() {
 bool testHammingDistanceRandom4() {
   char *s1 = "aaaaaaabbbbbe";
   char *s2 = "rrrrrrrrrraae";
-  int result = hamming_distance(s1, s2, 13);
+  int result = hammingDistance(s1, s2, 13);
   int expected = 12;
   Test_ensureEqualIntMsg(expected, result, HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
+
+  return true;
+}
+
+bool testRelativeDistanceZero() {
+  // expected is the same everywhere
+  int expected = 0;
+
+  char *s1 = "h";
+  char *s2 = "h";
+  int length = 1;
+  int result = relativeDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = relativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "he";
+  s2 = "he";
+  length = 2;
+  result = relativeDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = relativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "hello";
+  s2 = "hello";
+  length = 5;
+  result = relativeDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = relativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "sdglerglktgergposvdwef";
+  s2 = "sdglerglktgergposvdwef";
+  length = 22;
+  result = relativeDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = relativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
+bool testRelativeDistanceOne() {
+  // expected is the same everywhere
+  int expected = 1;
+
+  char *s1 = "h";
+  char *s2 = "g";
+  int length = 1;
+  int result = relativeDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = relativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "he";
+  s2 = "hd";
+  length = 2;
+  result = relativeDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = relativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "hello";
+  s2 = "hemlo";
+  length = 5;
+  result = relativeDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = relativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "hello";
+  s2 = "helko";
+  length = 5;
+  result = relativeDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = relativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
+bool testRelativeDistanceRandom1() {
+  char *s1 = "d";
+  char *s2 = "a";
+  int length = 1;
+  int result = relativeDistance(s1, s2, length);
+  int expected = 3;
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = relativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
+bool testRelativeDistanceRandom2() {
+  char *s1 = "dz";
+  char *s2 = "aa";
+  int length = 2;
+  int result = relativeDistance(s1, s2, length);
+  int expected = 29;
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = relativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
+bool testRelativeDistanceRandom3() {
+  char *s1 = "aaaaaaaa";
+  char *s2 = "aabcdedc";
+  int length = 8;
+  int result = relativeDistance(s1, s2, length);
+  int expected = 15;
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = relativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
+bool testRelativeDistanceRandom4() {
+  char *s1 = "aaaaaaaa";
+  char *s2 = "bcaadecd";
+  int length = 8;
+  int result = relativeDistance(s1, s2, length);
+  int expected = 15;
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = relativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
 
   return true;
 }
@@ -159,6 +290,12 @@ int main(int argc, char *argv[]) {
   Test_run(*testHammingDistanceRandom2, "testHammingDistanceRandom2");
   Test_run(*testHammingDistanceRandom3, "testHammingDistanceRandom3");
   Test_run(*testHammingDistanceRandom4, "testHammingDistanceRandom4");
+  Test_run(*testRelativeDistanceZero, "testRelativeDistanceZero");
+  Test_run(*testRelativeDistanceOne, "testRelativeDistanceOne");
+  Test_run(*testRelativeDistanceRandom1, "testRelativeDistanceRandom1");
+  Test_run(*testRelativeDistanceRandom2, "testRelativeDistanceRandom2");
+  Test_run(*testRelativeDistanceRandom3, "testRelativeDistanceRandom3");
+  Test_run(*testRelativeDistanceRandom4, "testRelativeDistanceRandom4");
 
   // At the end, conclude the results of these tests
   return Test_conclude();

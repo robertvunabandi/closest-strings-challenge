@@ -12,7 +12,7 @@
  * Preconditions:
  * - strnlen(s1) == strnlen(s2) == m
  */
-int hamming_distance(char *s1, char *s2, int m);
+int hammingDistance(char *s1, char *s2, int m);
 
 /**
  * Returns the sum of the relative distances at each position of 
@@ -25,7 +25,7 @@ int hamming_distance(char *s1, char *s2, int m);
  * Preconditions:
  * - strnlen(s1) == strnlen(s2) == m
  */
-int relative_distance(char *s1, char *s2, int m);
+int relativeDistance(char *s1, char *s2, int m);
 
 /**
  * This returns a distance that is almost the same as relative 
@@ -35,4 +35,4 @@ int relative_distance(char *s1, char *s2, int m);
  * Preconditions:
  * - strnlen(s1) == strnlen(s2) == m
  */
-int rotational_relative_distance(char *s1, char *s2, int m);
+int rotRelativeDistance(char *s1, char *s2, int m);

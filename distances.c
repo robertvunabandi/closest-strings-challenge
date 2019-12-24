@@ -7,7 +7,7 @@
 
 #include "./distances.h"
 
-int hamming_distance(char *s1, char *s2, int m) {
+int hammingDistance(char *s1, char *s2, int m) {
   int result = 0;
   for (int i = 0; i < m; i++) {
     if (s1[i] != s2[i]) {
@@ -20,7 +20,7 @@ int hamming_distance(char *s1, char *s2, int m) {
 const char *ALPHABET = "abcdefghijklmnopqrstuvwxyz";
 const int ALPHABET_LENGTH = 26;
 
-int relative_distance(char *s1, char *s2, int m) {
+int relativeDistance(char *s1, char *s2, int m) {
   int result = 0;
   for (int i = 0; i < m; i++) {
     bool started = false;
@@ -59,7 +59,7 @@ int relative_distance(char *s1, char *s2, int m) {
   return result;
 }
 
-int rotational_relative_distance(char *s1, char *s2, int m) {
+int rotRelativeDistance(char *s1, char *s2, int m) {
   int result = 0;
   // TODO: implement this function
   for (int i = 0; i < m; i++) {
