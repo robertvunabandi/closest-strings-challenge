@@ -1,6 +1,12 @@
 /**
  * Copyright (c) 2019-2020 Robert M. Vunabandi
  */
+#include "./cs.h"
+
+#include "./closest_strings.h"
+#include "./colors.h"
+#include "./distances.h"
+#include "./util.h"
 
 #include <ctype.h>
 #include <stdbool.h>
@@ -9,14 +15,6 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-
-#include "./closest_strings.h"
-#include "./colors.h"
-#include "./distances.h"
-#include "./util.h"
-
-#include "./cs.h"
-
 
 //
 // Allocating the List of Words

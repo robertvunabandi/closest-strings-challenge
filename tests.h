@@ -6,6 +6,8 @@
 
 #include "./colors.h"
 
+#include <stdbool.h>
+
 #define PASSED_EXIT_CODE 0
 #define FAILED_EXIT_CODE 1
 

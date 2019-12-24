@@ -2,10 +2,10 @@
  * Copyright (c) 2019-2020 Robert M. Vunabandi
  */
 
+#include "util.h"
+
 #include <stdio.h>
 #include <string.h>
-
-#include "util.h"
 
 bool String_equal(char *str1, char *str2) {
   return strcmp(str1, str2) == 0;

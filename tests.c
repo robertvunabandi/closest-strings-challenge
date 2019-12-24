@@ -2,15 +2,14 @@
  * Copyright (c) 2019-2020 Robert M. Vunabandi
  */
 
-#include <assert.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <time.h>
+#include "./tests.h"
 
 #include "./distances.h"
 #include "./util.h"
 
-#include "./tests.h"
+#include <assert.h>
+#include <stdio.h>
+#include <time.h>
 
 //
 // How to Test:

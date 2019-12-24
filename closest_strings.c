@@ -2,15 +2,15 @@
  * Copyright (c) 2019-2020 Robert M. Vunabandi
  */
 
-#include <assert.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
+#include "./closest_strings.h"
 
 #include "./alphabet.h"
 #include "./util.h"
 
-#include "./closest_strings.h"
+#include <assert.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
 
 //
 // Defining things to help with the current algorithm and creating

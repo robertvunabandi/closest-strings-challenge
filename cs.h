@@ -5,4 +5,4 @@
 #pragma once
 
 // This is how long our words are going to be by default.
-#define DEFAULT_M 8
+#define DEFAULT_M 4

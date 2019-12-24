@@ -2,12 +2,12 @@
  * Copyright (c) 2019-2020 Robert M. Vunabandi
  */
 
-#include <assert.h>
-#include <stdbool.h>
+#include "./distances.h"
 
 #include "./alphabet.h"
 
-#include "./distances.h"
+#include <assert.h>
+#include <stdbool.h>
 
 int hammingDistance(char *s1, char *s2, int m) {
   // Time Complexity: m
