@@ -40,7 +40,6 @@ void free_words(char **words, int argc) {
   free(words);
 }
 
-
 //
 // Parsing Program Arguments
 //
@@ -56,7 +55,6 @@ const char *H_FLAG_TITLE = "-h, --help";
 const char *H_FLAG_DESCR = "show this help message and exit";
 const char *L_FLAG_TITLE = "-l LENGTH, --length LENGTH";
 const char *L_FLAG_DESCR = "this is how long each word is going to be";
-
 
 /**
  * @param argc - number of arguments given

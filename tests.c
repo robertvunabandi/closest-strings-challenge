@@ -394,7 +394,6 @@ bool testRotRelativeDistanceRandom4() {
   return true;
 }
 
-
 // ---------------------------------------------------------------------------------
 
 //
@@ -562,4 +561,3 @@ bool Test_conclude() {
   printf("%sTime:%s        %.3fs\n", C_BOLD_WHITE, C_NC, tdiff);
   return FAILED_EXIT_CODE;
 }
-

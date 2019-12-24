@@ -117,4 +117,3 @@ int relativeCharDistance(char first, char second) {
   assert(result >= 0);
   return result;
 }
-
