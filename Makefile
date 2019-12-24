@@ -14,7 +14,7 @@ CFLAGS := -std=gnu11 -g -Wall
 LDFLAGS := 
 
 # put headers here
-HEADERS := cs.h util.h closest_strings.h distances.h tests.h colors.h
+HEADERS := cs.h util.h closest_strings.h distances.h tests.h colors.h alphabet.h
 
 # If you add a new file called "filename.c", add
 # "filename.o \" to this list.

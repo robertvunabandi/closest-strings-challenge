@@ -5,6 +5,8 @@
 #include <assert.h>
 #include <stdbool.h>
 
+#include "./alphabet.h"
+
 #include "./distances.h"
 
 int hammingDistance(char *s1, char *s2, int m) {
@@ -18,9 +20,6 @@ int hammingDistance(char *s1, char *s2, int m) {
   return result;
 }
 
-const char *ALPHABET = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
-const int ALPHABET_LENGTH = 26;
-const int WRAPPED_ALPHABET_LENGTH = ALPHABET_LENGTH * 2;
 typedef struct SortedChar {
   char first;  // this appears before or same as `second` in the alphabet
   char second; // this appears same or after `first` in the alphabet
