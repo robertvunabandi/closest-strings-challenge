@@ -11,6 +11,8 @@
 #include <unistd.h>
 
 #include "./closest_strings.h"
+#include "./colors.h"
+#include "./distances.h"
 #include "./util.h"
 
 #include "./cs.h"
@@ -217,26 +219,28 @@ int getWords(char **output, const int m, int argc, char **argv) {
   return words_found;
 }
 
+void runBenchmark(
+  char **words, 
+  const int num_words, 
+  const int m,
+  int (*distance)(char *, char*, int),
+  char *info
+) {
+  struct timespec t_start, t_end;
+  ClosestStringResult *csr = CSR_allocate(m);
+  printf("> Benchmarking %s:\n", info);
 
-void quickTest() {
-  long v = 0;
-  long bound = 300;
-  for (long i = 0; i < bound; i++) {
-    for (long i = 0; i < bound; i++) {
-      for (long i = 0; i < bound; i++) {
-        v += 1;
-        if (v % 13 == 0) {
-          v -= 3;
-        }
-        if (v % 4 == 0) {
-          v -= 45;
-        }
-      }
-    }
-  }
-  printf("computed v: %ld\n", v);
+  clock_gettime(CLOCK_MONOTONIC, &t_start);
+  closest_string(words, num_words, m, distance, csr);
+  clock_gettime(CLOCK_MONOTONIC, &t_end);
+  report_time(&t_start, &t_end, "    ");
+  printf("    results:\n");
+  printf("      k: %d\n", csr->k);
+  printf("      m: %d\n", csr->m);
+  printf("      s: %s\n", csr->s);
+
+  CSR_free(csr);
 }
-
 
 int main(int argc, char** argv) {
   // Check to see if the help flag was given and display help
@@ -247,9 +251,9 @@ int main(int argc, char** argv) {
   }
 
   // Read and interpret the command line arguments.
-  printf("== RUNNING CLOSEST STRING PROGRAM ==\n\n");
+  printf("%s== RUNNING CLOSEST STRING PROGRAM ==%s\n\n", C_BOLD_CYAN, C_NC);
 
-  // TODO: Prevent invalid flags and double flags
+  // TODO(enhancement): Prevent invalid flags and double flags
 
   const int m = getMValue(argc, argv);
   if (m == -1) {
@@ -266,20 +270,19 @@ int main(int argc, char** argv) {
   }
 
   // Pring the program's arguments.
-  printf("M: %d | number of words: %d | words: {", m, num_words);
+  printf("M:         %s%d%s\n", C_BOLD_WHITE, m, C_NC);
+  printf("num_words: %s%d%s\n", C_BOLD_WHITE, num_words, C_NC);
+  printf("words:     %s{", C_BOLD_WHITE);
   for (int i = 0; i < num_words - 1; i++) {
     printf("%s, ", words[i]);
   }
-  printf("%s}\n", words[num_words - 1]);
+  printf("%s}%s\n\n", words[num_words - 1], C_NC);
 
   // Start running the program, timing each specific distance 
   // functions.
-  struct timespec t_start, t_end;
-
-  clock_gettime(CLOCK_MONOTONIC, &t_start);
-  quickTest();
-  clock_gettime(CLOCK_MONOTONIC, &t_end);
-  report_time("quickTest", &t_start, &t_end);
+  runBenchmark(words, num_words, m, &hammingDistance, "hammingDistance");
+  runBenchmark(words, num_words, m, &relativeDistance, "relativeDistance");
+  runBenchmark(words, num_words, m, &rotRelativeDistance, "rotRelativeDistance");
 
   free_words(words, argc);
   return 0;

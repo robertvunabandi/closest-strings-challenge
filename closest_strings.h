@@ -30,20 +30,21 @@ typedef struct ClosestStringResult {
  * - the return value of the distance function is >= 0
  * - for distance(s1, s2, q), strnlen(s1) == strnlen(s2) == q
  * 
- * Postcondition:
+ * Postcondition (result placed inside `csr`):
  * If `r` is the result of this call, then :
  * - distance(r->s, word, m) <= r->k for all `word` in `words`
  * - for all other length-`m` string `s`, there does not exist `word` in `words`
  *   such that distance(s, word, m) < r->k
  */
-ClosestStringResult *closest_string(
+void closest_string(
   char **words, 
   const int num_words, 
   const int m,
-  int (*distance)(char *, char*, int)
+  int (*distance)(char *, char*, int),
+  ClosestStringResult *csr
 );
 
 // Allocating ClosestStringResult functions
 
 ClosestStringResult *CSR_allocate(int m);
-void CSR_deallocate(ClosestStringResult * csr);
+void CSR_free(ClosestStringResult * csr);

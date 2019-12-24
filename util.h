@@ -27,4 +27,4 @@ bool String_equal(char *str1, char *str2);
 /**
  * Report the time with the given information string.
  */
-void report_time(char *info, struct timespec *start, struct timespec *end);
+void report_time(struct timespec *start, struct timespec *end, char *prefix);
