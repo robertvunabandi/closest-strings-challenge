@@ -37,6 +37,7 @@ bool testSampleTest() {
 
 #define HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2) "%s%s%s failed for strings %s{\"%s\", \"%s\"}%s\n", C_BOLD_BLACK, "hammingDistance", C_NC, C_BOLD_WHITE, s1, s2, C_NC
 #define RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2) "%s%s%s failed for strings %s{\"%s\", \"%s\"}%s\n", C_BOLD_BLACK, "relvativeDistance", C_NC, C_BOLD_WHITE, s1, s2, C_NC
+#define ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2) "%s%s%s failed for strings %s{\"%s\", \"%s\"}%s\n", C_BOLD_BLACK, "rotRelvativeDistance", C_NC, C_BOLD_WHITE, s1, s2, C_NC
 
 bool testHammingDistanceZero() {
   // expected is the same everywhere
@@ -230,7 +231,7 @@ bool testRelativeDistanceRandom2() {
   char *s2 = "aa";
   int length = 2;
   int result = relativeDistance(s1, s2, length);
-  int expected = 29;
+  int expected = 28;
   Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
   result = relativeDistance(s2, s1, length);
   Test_ensureEqualIntMsg(expected, result, RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
@@ -264,6 +265,136 @@ bool testRelativeDistanceRandom4() {
   return true;
 }
 
+bool testRotRelativeDistanceZero() {
+  // expected is the same everywhere
+  int expected = 0;
+
+  char *s1 = "h";
+  char *s2 = "h";
+  int length = 1;
+  int result = rotRelativeDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "he";
+  s2 = "he";
+  length = 2;
+  result = rotRelativeDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "hello";
+  s2 = "hello";
+  length = 5;
+  result = rotRelativeDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "sdglerglktgergposvdwef";
+  s2 = "sdglerglktgergposvdwef";
+  length = 22;
+  result = rotRelativeDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
+bool testRotRelativeDistanceOne() {
+  // expected is the same everywhere
+  int expected = 1;
+
+  char *s1 = "h";
+  char *s2 = "g";
+  int length = 1;
+  int result = rotRelativeDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "he";
+  s2 = "hd";
+  length = 2;
+  result = rotRelativeDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "hello";
+  s2 = "hemlo";
+  length = 5;
+  result = rotRelativeDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "hello";
+  s2 = "helko";
+  length = 5;
+  result = rotRelativeDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
+bool testRotRelativeDistanceRandom1() {
+  char *s1 = "d";
+  char *s2 = "z";
+  int length = 1;
+  int result = rotRelativeDistance(s1, s2, length);
+  int expected = 4;
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
+bool testRotRelativeDistanceRandom2() {
+  char *s1 = "dz";
+  char *s2 = "aa";
+  int length = 2;
+  int result = rotRelativeDistance(s1, s2, length);
+  int expected = 4;
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
+bool testRotRelativeDistanceRandom3() {
+  char *s1 = "aaaa";
+  char *s2 = "atau";
+  int length = 4;
+  int result = rotRelativeDistance(s1, s2, length);
+  int expected = 13;
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
+bool testRotRelativeDistanceRandom4() {
+  char *s1 = "ff";
+  char *s2 = "zg";
+  int length = 2;
+  int result = rotRelativeDistance(s1, s2, length);
+  int expected = 7;
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
 
 // ---------------------------------------------------------------------------------
 
@@ -290,12 +421,20 @@ int main(int argc, char *argv[]) {
   Test_run(*testHammingDistanceRandom2, "testHammingDistanceRandom2");
   Test_run(*testHammingDistanceRandom3, "testHammingDistanceRandom3");
   Test_run(*testHammingDistanceRandom4, "testHammingDistanceRandom4");
+
   Test_run(*testRelativeDistanceZero, "testRelativeDistanceZero");
   Test_run(*testRelativeDistanceOne, "testRelativeDistanceOne");
   Test_run(*testRelativeDistanceRandom1, "testRelativeDistanceRandom1");
   Test_run(*testRelativeDistanceRandom2, "testRelativeDistanceRandom2");
   Test_run(*testRelativeDistanceRandom3, "testRelativeDistanceRandom3");
   Test_run(*testRelativeDistanceRandom4, "testRelativeDistanceRandom4");
+
+  Test_run(*testRotRelativeDistanceZero, "testRotRelativeDistanceZero");
+  Test_run(*testRotRelativeDistanceOne, "testRotRelativeDistanceOne");
+  Test_run(*testRotRelativeDistanceRandom1, "testRotRelativeDistanceRandom1");
+  Test_run(*testRotRelativeDistanceRandom2, "testRotRelativeDistanceRandom2");
+  Test_run(*testRotRelativeDistanceRandom3, "testRotRelativeDistanceRandom3");
+  Test_run(*testRotRelativeDistanceRandom4, "testRotRelativeDistanceRandom4");
 
   // At the end, conclude the results of these tests
   return Test_conclude();

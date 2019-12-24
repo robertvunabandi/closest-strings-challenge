@@ -30,7 +30,9 @@ int relativeDistance(char *s1, char *s2, int m);
 /**
  * This returns a distance that is almost the same as relative 
  * distance except one can wrap around the alphabet. For instance,
- * the rotational relative distance from a to z is 1.
+ * the rotational relative distance from a to z is 1. In other words,
+ * this returns the distance made from the shortest delta (either 
+ * moving back the alphabet or forward).
  * 
  * Preconditions:
  * - strnlen(s1) == strnlen(s2) == m
