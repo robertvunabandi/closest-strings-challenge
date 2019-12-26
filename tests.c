@@ -4,11 +4,13 @@
 
 #include "./tests.h"
 
+#include "./closest_strings.h"
 #include "./distances.h"
-#include "./util.h"
 
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 //
@@ -398,6 +400,82 @@ bool testRotRelativeDistanceRandom4() {
   return true;
 }
 
+//
+// Testing `closest_strings.h` Main function
+//
+
+#define LARGE_ENOUGH_STRING_SIZE 1000
+#define CLOSEST_STRINGS_RESULT_K_VA_ARGS_MSG(e_k, r_k)                                   \
+  "%sclosest_strings%s failed. Expected csr->k to be %s%d%s, but instead was %s%d%s\n",  \
+    C_BOLD_BLACK, C_NC, C_BOLD_CYAN, e_k, C_NC, C_BOLD_RED, r_k, C_NC
+#define CLOSEST_STRINGS_RESULT_M_VA_ARGS_MSG(e_m, r_m)                                   \
+  "%sclosest_strings%s failed. Expected csr->m to be %s%d%s, but instead was %s%d%s\n",  \
+    C_BOLD_BLACK, C_NC, C_BOLD_CYAN, e_m, C_NC, C_BOLD_RED, r_m, C_NC
+#define CLOSEST_STRINGS_RESULT_LENGTH_VA_ARGS_MSG(e_l, r_l)                                     \
+  "%sclosest_strings%s failed. expected strlen(csr->s) to be %s%d%s, but instead was %s%d%s\n", \
+    C_BOLD_BLACK, C_NC, C_BOLD_CYAN, e_l, C_NC, C_BOLD_RED, r_l, C_NC
+#define CLOSEST_STRINGS_RESULT_S_VA_ARGS_MSG(e_s, r_s)                                   \
+  "%sclosest_strings%s failed. Expected csr->s to be %s%s%s, but instead was %s%s%s\n",  \
+    C_BOLD_BLACK, C_NC, C_BOLD_CYAN, e_s, C_NC, C_BOLD_RED, r_s, C_NC
+
+bool testClosestStringsSameStrings() {
+  char *words[] = {"aa", "aa", "aa", "aa"};
+  const int num_words = 4;
+  const int m = 2;
+  int num_funcs = 3;
+  int (*dist_funcs[3])(char *, char *, int)  = {
+    &hammingDistance, 
+    &relativeDistance, 
+    &rotRelativeDistance
+  };
+  int expected_k = 0;
+  int expected_m = 2;
+  int expected_length = expected_m;
+  char *expected_s = "aa";
+  for (int i = 0; i < num_funcs; i++) {
+    ClosestStringResult *csr = CSR_allocate(m);
+    int result_k;
+    int result_m;
+    int result_length;
+    // result_s has this length because strcpy needs the dest
+    // string to be large enough to hold the source string it's
+    // copying. Since we're copying before testing, we can't 
+    // assume that the method will work correctly, so we pass 
+    // in a size that's large enough. We do all this to prevent
+    // segmentation faults.
+    char result_s[LARGE_ENOUGH_STRING_SIZE] = "";
+    closest_string(words, num_words, m, dist_funcs[i], csr);
+    result_k = csr->k;
+    result_m = csr->m;
+    result_length = strlen(csr->s);
+    strcpy(result_s, csr->s);
+    CSR_free(csr);
+    // Now, test that the results match.
+    Test_ensureEqualIntMsg(
+      expected_k,
+      result_k,
+      CLOSEST_STRINGS_RESULT_K_VA_ARGS_MSG(expected_k, result_k)
+    );
+    Test_ensureEqualIntMsg(
+      expected_m,
+      result_m,
+      CLOSEST_STRINGS_RESULT_M_VA_ARGS_MSG(expected_m, result_m)
+    );
+    Test_ensureEqualIntMsg(
+      expected_length,
+      result_length,
+      CLOSEST_STRINGS_RESULT_LENGTH_VA_ARGS_MSG(expected_length, result_length)
+    );
+    Test_ensureEqualStringMsg(
+      expected_s,
+      result_s,
+      CLOSEST_STRINGS_RESULT_S_VA_ARGS_MSG(expected_s, result_s)
+    );
+  }
+  return true;
+}
+
+
 // ---------------------------------------------------------------------------------
 
 //
@@ -436,6 +514,11 @@ int main(int argc, char *argv[]) {
   Test_run(*testRotRelativeDistanceRandom2, "testRotRelativeDistanceRandom2");
   Test_run(*testRotRelativeDistanceRandom3, "testRotRelativeDistanceRandom3");
   Test_run(*testRotRelativeDistanceRandom4, "testRotRelativeDistanceRandom4");
+
+  // `closest_string.h` group
+  Test_group("Closest String: closest_strings");
+  Test_run(*testClosestStringsSameStrings, "testClosestStringsSameStrings");
+
 
   // At the end, conclude the results of these tests
   return Test_conclude();

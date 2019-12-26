@@ -5,6 +5,7 @@
 #pragma once
 
 #include "./colors.h"
+#include "./util.h"
 
 #include <stdbool.h>
 
@@ -161,6 +162,36 @@ bool Test_conclude();
     fprintf(stderr, __VA_ARGS__);                                            \
     fprintf(stderr, "      Expected %s%d%s\n", C_BOLD_CYAN, expected, C_NC); \
     fprintf(stderr, "      Received %s%d%s\n", C_BOLD_RED, received, C_NC);  \
+    fprintf(stderr, "\n");                                                   \
+    return false;                                                            \
+  }                                                                          \
+}
+
+#define Test_ensureEqualString(expected, received) {                         \
+  if (!String_equal(received, expected)) {                                   \
+    fprintf(stderr, "\n");                                                   \
+    fprintf(                                                                 \
+      stderr, "    %s[%s:%s:%d]%s\n",                                        \
+      C_BOLD_WHITE, __FILE__, __func__, __LINE__, C_NC                       \
+    );                                                                       \
+    fprintf(stderr, "      Expected %s%s%s\n", C_BOLD_CYAN, expected, C_NC); \
+    fprintf(stderr, "      Received %s%s%s\n", C_BOLD_RED, received, C_NC);  \
+    fprintf(stderr, "\n");                                                   \
+    return false;                                                            \
+  }                                                                          \
+}
+
+#define Test_ensureEqualStringMsg(expected, received, ...) {                 \
+  if (!String_equal(received, expected)) {                                   \
+    fprintf(stderr, "\n");                                                   \
+    fprintf(                                                                 \
+      stderr, "    %s[%s:%s:%d]%s\n",                                        \
+      C_BOLD_WHITE, __FILE__, __func__, __LINE__, C_NC                       \
+    );                                                                       \
+    fprintf(stderr, "      ");                                               \
+    fprintf(stderr, __VA_ARGS__);                                            \
+    fprintf(stderr, "      Expected %s%s%s\n", C_BOLD_CYAN, expected, C_NC); \
+    fprintf(stderr, "      Received %s%s%s\n", C_BOLD_RED, received, C_NC);  \
     fprintf(stderr, "\n");                                                   \
     return false;                                                            \
   }                                                                          \
