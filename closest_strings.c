@@ -69,7 +69,8 @@ void closest_string(
         max_k = dist;
       }
     }
-    if (csr->k == -1 || csr->k > max_k) {
+    assert(max_k > -1);
+    if (csr->k == -1 || max_k < csr->k) {
       csr->k = max_k;
       strcpy(csr->s, word);
     }
