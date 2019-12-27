@@ -400,6 +400,91 @@ bool testRotRelativeDistanceRandom4() {
   return true;
 }
 
+bool testRotRelativeDistanceRegression1() {
+  char *s1 = "a";
+  char *s2 = "b";
+  int length = 1;
+  int result = rotRelativeDistance(s1, s2, length);
+  int expected = 1;
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "b";
+  s2 = "b";
+  result = rotRelativeDistance(s1, s2, length);
+  expected = 0;
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "c";
+  s2 = "b";
+  result = rotRelativeDistance(s1, s2, length);
+  expected = 1;
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "d";
+  s2 = "b";
+  result = rotRelativeDistance(s1, s2, length);
+  expected = 2;
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "e";
+  s2 = "b";
+  result = rotRelativeDistance(s1, s2, length);
+  expected = 3;
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+bool testRotRelativeDistanceRegression2() {
+  char *s1 = "b";
+  char *s2 = "c";
+  int length = 1;
+  int result = rotRelativeDistance(s1, s2, length);
+  int expected = 1;
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "c";
+  result = rotRelativeDistance(s1, s2, length);
+  expected = 0;
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "d";
+  result = rotRelativeDistance(s1, s2, length);
+  expected = 1;
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "e";
+  result = rotRelativeDistance(s1, s2, length);
+  expected = 2;
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "f";
+  result = rotRelativeDistance(s1, s2, length);
+  expected = 3;
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = rotRelativeDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
 //
 // Testing `closest_strings.h` Main function
 //
@@ -514,6 +599,8 @@ int main(int argc, char *argv[]) {
   Test_run(*testRotRelativeDistanceRandom2, "testRotRelativeDistanceRandom2");
   Test_run(*testRotRelativeDistanceRandom3, "testRotRelativeDistanceRandom3");
   Test_run(*testRotRelativeDistanceRandom4, "testRotRelativeDistanceRandom4");
+  Test_run(*testRotRelativeDistanceRegression1, "testRotRelativeDistanceRegression1");
+  Test_run(*testRotRelativeDistanceRegression2, "testRotRelativeDistanceRegression2");
 
   // `closest_string.h` group
   Test_group("Closest String: closest_strings");
