@@ -28,3 +28,12 @@ bool String_equal(char *str1, char *str2);
  * Report the time with the given information string.
  */
 void report_time(struct timespec *start, struct timespec *end, char *prefix);
+
+#define NUM_BITS_IN_BYTE 8
+
+typedef enum hash_t {
+  INTEGER_HT,
+  STRING_HT
+} hash_t;
+
+int hash(void *value, hash_t vtype);
