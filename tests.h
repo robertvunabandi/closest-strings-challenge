@@ -196,3 +196,23 @@ bool Test_conclude();
     return false;                                                            \
   }                                                                          \
 }
+
+#define Test_ensureStringInArrayMsg(expected_array, array_size, received, ...) {  \
+  if (!String_in_array(received, expected_array, array_size)) {                   \
+    fprintf(stderr, "\n");                                                        \
+    fprintf(                                                                      \
+      stderr, "    %s[%s:%s:%d]%s\n",                                             \
+      C_BOLD_WHITE, __FILE__, __func__, __LINE__, C_NC                            \
+    );                                                                            \
+    fprintf(stderr, "      ");                                                    \
+    fprintf(stderr, __VA_ARGS__);                                                 \
+    fprintf(stderr, "      Expected argument to be in set %s{", C_BOLD_CYAN);     \
+    for (int idx_ = 0; idx_ < array_size - 1; idx_++) {                           \
+      fprintf(stderr, "%s, ", expected_array[idx_]);                              \
+    }                                                                             \
+    fprintf(stderr, "%s}%s\n", expected_array[array_size - 1], C_NC);             \
+    fprintf(stderr, "      Received %s%s%s\n", C_BOLD_RED, received, C_NC);       \
+    fprintf(stderr, "\n");                                                        \
+    return false;                                                                 \
+  }                                                                               \
+}

@@ -25,6 +25,12 @@
 bool String_equal(char *str1, char *str2);
 
 /**
+ * Returns true when str is contained in the array str_arr
+ * of size length.
+ */
+bool String_in_array(char *str, char **str_arr, int length);
+
+/**
  * Report the time with the given information string.
  */
 void report_time(struct timespec *start, struct timespec *end, char *prefix);

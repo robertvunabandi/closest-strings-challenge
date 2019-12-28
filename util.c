@@ -11,6 +11,15 @@ bool String_equal(char *str1, char *str2) {
   return strcmp(str1, str2) == 0;
 }
 
+bool String_in_array(char *str, char **str_arr, int length) {
+  for (int i = 0; i < length; i++) {
+    if (String_equal(str, str_arr[i])) {
+      return true;
+    }
+  }
+  return false;
+}
+
 void report_time(struct timespec *start, struct timespec *end, char *prefix) {
   double tdiff = (end->tv_sec - start->tv_sec) + 1e-9 * (end->tv_nsec - start->tv_nsec);
   printf("%stime: %.6fs\n", prefix, tdiff);

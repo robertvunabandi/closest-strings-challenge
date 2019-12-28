@@ -502,6 +502,12 @@ bool testRotRelativeDistanceRegression2() {
 #define CLOSEST_STRINGS_RESULT_S_VA_ARGS_MSG(e_s, r_s)                                   \
   "%sclosest_strings%s failed. Expected csr->s to be %s%s%s, but instead was %s%s%s\n",  \
     C_BOLD_BLACK, C_NC, C_BOLD_CYAN, e_s, C_NC, C_BOLD_RED, r_s, C_NC
+#define CLOSEST_STRINGS_RESULT_S_IN_ARRAY_IDX_VA_ARGS_MSG(r_s, idx)  \
+  "%sclosest_strings%s failed. Expected csr->s (%s%s%s) at index %s%d%s to be in the given set but it wasn't.\n",  \
+    C_BOLD_BLACK, C_NC, C_BOLD_RED, r_s, C_NC, C_BOLD_WHITE, idx, C_NC
+#define CLOSEST_STRINGS_RESULT_S_IN_ARRAY_VA_ARGS_MSG(r_s)  \
+  "%sclosest_strings%s failed. Expected csr->s (%s%s%s) to be in the given set but it wasn't.\n",  \
+    C_BOLD_BLACK, C_NC, C_BOLD_RED, r_s, C_NC 
 
 bool testClosestStringsSameStrings() {
   char *words[] = {"aa", "aa", "aa", "aa"};
@@ -560,6 +566,157 @@ bool testClosestStringsSameStrings() {
   return true;
 }
 
+bool testClosestStringsHammingDistance1() {
+  char *words[] = {"ax", "by", "cz", "da", "eb"};
+  const int num_words = 5;
+  const int m = 2;
+
+  int expected_k = 2;
+  int expected_m = 2;
+  int expected_length = expected_m;
+  char *expected_s_char_0[] = {"a", "b", "c", "d", "e"};
+  char *expected_s_char_1[] = {"x", "y", "z", "a", "b"};
+  const int expected_s_set_length = 5;
+
+  ClosestStringResult *csr = CSR_allocate(m);
+  int result_k;
+  int result_m;
+  int result_length;
+  char result_s[LARGE_ENOUGH_STRING_SIZE] = "";
+  closest_string(words, num_words, m, &hammingDistance, csr);
+  result_k = csr->k;
+  result_m = csr->m;
+  result_length = strlen(csr->s);
+  strcpy(result_s, csr->s);
+  CSR_free(csr);
+
+  Test_ensureEqualIntMsg(
+    expected_k,
+    result_k,
+    CLOSEST_STRINGS_RESULT_K_VA_ARGS_MSG(expected_k, result_k)
+  );
+  Test_ensureEqualIntMsg(
+    expected_m,
+    result_m,
+    CLOSEST_STRINGS_RESULT_M_VA_ARGS_MSG(expected_m, result_m)
+  );
+  Test_ensureEqualIntMsg(
+    expected_length,
+    result_length,
+    CLOSEST_STRINGS_RESULT_LENGTH_VA_ARGS_MSG(expected_length, result_length)
+  );
+  char result_0[2];
+  result_0[0] = result_s[0];
+  Test_ensureStringInArrayMsg(
+    expected_s_char_0,
+    expected_s_set_length,
+    result_0,
+    CLOSEST_STRINGS_RESULT_S_IN_ARRAY_IDX_VA_ARGS_MSG(result_0, 0)
+  );
+  char result_1[2];
+  result_1[0] = result_s[1];
+  Test_ensureStringInArrayMsg(
+    expected_s_char_1,
+    expected_s_set_length,
+    result_1,
+    CLOSEST_STRINGS_RESULT_S_IN_ARRAY_IDX_VA_ARGS_MSG(result_1, 1)
+  );
+  return true;
+}
+
+bool testClosestStringsRelativeDistance1() {
+  char *words[] = {"ax", "by", "cz", "da", "eb"};
+  const int num_words = 5;
+  const int m = 2;
+
+  int expected_k = 13;
+  int expected_m = 2;
+  int expected_length = expected_m;
+  char *expected_s_set[] = {"cm", "dn"};
+  const int expected_s_set_length = 2;
+
+  ClosestStringResult *csr = CSR_allocate(m);
+  int result_k;
+  int result_m;
+  int result_length;
+  char result_s[LARGE_ENOUGH_STRING_SIZE] = "";
+  closest_string(words, num_words, m, &relativeDistance, csr);
+  result_k = csr->k;
+  result_m = csr->m;
+  result_length = strlen(csr->s);
+  strcpy(result_s, csr->s);
+  CSR_free(csr);
+
+  Test_ensureEqualIntMsg(
+    expected_k,
+    result_k,
+    CLOSEST_STRINGS_RESULT_K_VA_ARGS_MSG(expected_k, result_k)
+  );
+  Test_ensureEqualIntMsg(
+    expected_m,
+    result_m,
+    CLOSEST_STRINGS_RESULT_M_VA_ARGS_MSG(expected_m, result_m)
+  );
+  Test_ensureEqualIntMsg(
+    expected_length,
+    result_length,
+    CLOSEST_STRINGS_RESULT_LENGTH_VA_ARGS_MSG(expected_length, result_length)
+  );
+  Test_ensureStringInArrayMsg(
+    expected_s_set,
+    expected_s_set_length,
+    result_s,
+    CLOSEST_STRINGS_RESULT_S_IN_ARRAY_VA_ARGS_MSG(result_s)
+  );
+  return true;
+}
+
+bool testClosestStringsRotRelativeDistance1() {
+  char *words[] = {"ax", "by", "cz", "da", "eb"};
+  const int num_words = 5;
+  const int m = 2;
+
+  int expected_k = 4;
+  int expected_m = 2;
+  int expected_length = expected_m;
+  char *expected_s_set[] = {"ba", "cz", "dy"};
+  const int expected_s_set_length = 2;
+
+  ClosestStringResult *csr = CSR_allocate(m);
+  int result_k;
+  int result_m;
+  int result_length;
+  char result_s[LARGE_ENOUGH_STRING_SIZE] = "";
+  closest_string(words, num_words, m, &rotRelativeDistance, csr);
+  result_k = csr->k;
+  result_m = csr->m;
+  result_length = strlen(csr->s);
+  strcpy(result_s, csr->s);
+  CSR_free(csr);
+
+  Test_ensureEqualIntMsg(
+    expected_k,
+    result_k,
+    CLOSEST_STRINGS_RESULT_K_VA_ARGS_MSG(expected_k, result_k)
+  );
+  Test_ensureEqualIntMsg(
+    expected_m,
+    result_m,
+    CLOSEST_STRINGS_RESULT_M_VA_ARGS_MSG(expected_m, result_m)
+  );
+  Test_ensureEqualIntMsg(
+    expected_length,
+    result_length,
+    CLOSEST_STRINGS_RESULT_LENGTH_VA_ARGS_MSG(expected_length, result_length)
+  );
+  Test_ensureStringInArrayMsg(
+    expected_s_set,
+    expected_s_set_length,
+    result_s,
+    CLOSEST_STRINGS_RESULT_S_IN_ARRAY_VA_ARGS_MSG(result_s)
+  );
+  return true;
+}
 
 // ---------------------------------------------------------------------------------
 
@@ -605,6 +762,9 @@ int main(int argc, char *argv[]) {
   // `closest_string.h` group
   Test_group("Closest String: closest_strings");
   Test_run(*testClosestStringsSameStrings, "testClosestStringsSameStrings");
+  Test_run(*testClosestStringsHammingDistance1, "testClosestStringsHammingDistance1");
+  Test_run(*testClosestStringsRelativeDistance1, "testClosestStringsRelativeDistance1");
+  Test_run(*testClosestStringsRotRelativeDistance1, "testClosestStringsRotRelativeDistance1");
 
 
   // At the end, conclude the results of these tests
