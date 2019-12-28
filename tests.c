@@ -680,7 +680,7 @@ bool testClosestStringsRotRelativeDistance1() {
   int expected_m = 2;
   int expected_length = expected_m;
   char *expected_s_set[] = {"ba", "cz", "dy"};
-  const int expected_s_set_length = 2;
+  const int expected_s_set_length = 3;
 
   ClosestStringResult *csr = CSR_allocate(m);
   int result_k;
