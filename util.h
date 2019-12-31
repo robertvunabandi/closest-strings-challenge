@@ -42,4 +42,17 @@ typedef enum hash_t {
   STRING_HT
 } hash_t;
 
+/**
+ * The hash function, for a given valid hash type hash_t, is defined such that
+ * if two objects (which must be immutable) of that type are behaviorally equal,
+ * then their hash values are also equal. Behavioral equality here is used as
+ * defined in MIT course 6.031 in the Equality section. It says, 
+ * 
+ *   behavioral equality means that two references cannot be distinguished now 
+ *   or in the future, even if a mutator is called to change the state of one 
+ *   object but not the other. This tests whether the two references will 
+ *   'behave' the same, in this and all future states.
+ * 
+ * See http://web.mit.edu/6.031/www/fa19/classes/15-equality/#equality_of_mutable_types 
+ */
 int hash(void *value, hash_t vtype);
