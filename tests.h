@@ -167,6 +167,36 @@ bool Test_conclude();
   }                                                                          \
 }
 
+#define Test_ensureEqualChar(expected, received) {                           \
+  if (received != expected) {                                                \
+    fprintf(stderr, "\n");                                                   \
+    fprintf(                                                                 \
+      stderr, "    %s[%s:%s:%d]%s\n",                                        \
+      C_BOLD_WHITE, __FILE__, __func__, __LINE__, C_NC                       \
+    );                                                                       \
+    fprintf(stderr, "      Expected %s%c%s\n", C_BOLD_CYAN, expected, C_NC); \
+    fprintf(stderr, "      Received %s%c%s\n", C_BOLD_RED, received, C_NC);  \
+    fprintf(stderr, "\n");                                                   \
+    return false;                                                            \
+  }                                                                          \
+}
+
+#define Test_ensureEqualCharMsg(expected, received, ...) {                   \
+  if (received != expected) {                                                \
+    fprintf(stderr, "\n");                                                   \
+    fprintf(                                                                 \
+      stderr, "    %s[%s:%s:%d]%s\n",                                        \
+      C_BOLD_WHITE, __FILE__, __func__, __LINE__, C_NC                       \
+    );                                                                       \
+    fprintf(stderr, "      ");                                               \
+    fprintf(stderr, __VA_ARGS__);                                            \
+    fprintf(stderr, "      Expected %s%c%s\n", C_BOLD_CYAN, expected, C_NC); \
+    fprintf(stderr, "      Received %s%c%s\n", C_BOLD_RED, received, C_NC);  \
+    fprintf(stderr, "\n");                                                   \
+    return false;                                                            \
+  }                                                                          \
+}
+
 #define Test_ensureEqualString(expected, received) {                         \
   if (!String_equal(received, expected)) {                                   \
     fprintf(stderr, "\n");                                                   \
