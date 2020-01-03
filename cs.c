@@ -215,6 +215,17 @@ int getWords(char **output, const int m, int argc, char **argv) {
   return words_found;
 }
 
+/**
+ * Runs the `closest_strings` program defined in `closest_strings.h`
+ * with the given words and then report how long it took to run.
+ *
+ * @param words - words given in the CLI
+ * @param num_words - total number of words
+ * @param m - the length of each words. All words must have this length.
+ * @param distance - a function that computes the distance of two words
+ *                   that have the same length
+ * @param info - A string to print when running this benchmark
+ */
 void runBenchmark(
   char **words,
   const int num_words,
@@ -279,6 +290,7 @@ int main(int argc, char **argv) {
   runBenchmark(words, num_words, m, &hammingDistance, "hammingDistance");
   runBenchmark(words, num_words, m, &relativeDistance, "relativeDistance");
   runBenchmark(words, num_words, m, &rotRelativeDistance, "rotRelativeDistance");
+  runBenchmark(words, num_words, m, &pairwiseHammingDistance, "pairwiseHammingDistance");
 
   free_words(words, argc);
   return 0;

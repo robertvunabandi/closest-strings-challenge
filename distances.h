@@ -38,3 +38,13 @@ int relativeDistance(char *s1, char *s2, int m);
  * - strnlen(s1) == strnlen(s2) == m
  */
 int rotRelativeDistance(char *s1, char *s2, int m);
+
+/**
+ * This returns a distance that works the following way. Given the words
+ * s1 = {c1_1, c1_2, ..., c1_m} and s2 = {c2_1, c2_2, ..., c2_m}, returns
+ * sum((|j - i| + 1) * hamming_distance(c1_i, c2_j)) for i, j in range [1..m].
+ *
+ * Preconditions:
+ * - strnlen(s1) == strnlen(s2) == m
+ */
+int pairwiseHammingDistance(char *s1, char *s2, int m);

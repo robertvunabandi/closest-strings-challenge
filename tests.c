@@ -151,6 +151,9 @@ bool testUtilHash_stringT() {
 #define ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2)                                    \
   "%s%s%s failed for strings %s{\"%s\", \"%s\"}%s\n", C_BOLD_BLACK,                  \
     "rotRelvativeDistance", C_NC, C_BOLD_WHITE, s1, s2, C_NC
+#define PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2)                                \
+  "%s%s%s failed for strings %s{\"%s\", \"%s\"}%s\n", C_BOLD_BLACK,                  \
+    "pairwiseHammingDistance", C_NC, C_BOLD_WHITE, s1, s2, C_NC
 
 bool testHammingDistanceZero() {
   // expected is the same everywhere
@@ -587,6 +590,139 @@ bool testRotRelativeDistanceRegression2() {
   Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s1, s2));
   result = rotRelativeDistance(s2, s1, length);
   Test_ensureEqualIntMsg(expected, result, ROT_RELATIVE_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
+bool testPairwiseHammingDistanceZero() {
+  // expected is the same everywhere
+  int expected = 0;
+
+  char *s1 = "h";
+  char *s2 = "h";
+  int length = 1;
+  int result = pairwiseHammingDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = pairwiseHammingDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "hh";
+  s2 = "hh";
+  length = 2;
+  result = pairwiseHammingDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = pairwiseHammingDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "bbbbb";
+  s2 = "bbbbb";
+  length = 5;
+  result = pairwiseHammingDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = pairwiseHammingDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "zzzzzzzzzzzzzzzzzzzzzz";
+  s2 = "zzzzzzzzzzzzzzzzzzzzzz";
+  length = 22;
+  result = pairwiseHammingDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = pairwiseHammingDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
+bool testPairwiseHammingDistanceOneLetterDiffer() {
+  // expected is the same everywhere
+
+  char *s1 = "h";
+  char *s2 = "g";
+  int length = 1;
+  int expected = 1;
+  int result = pairwiseHammingDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = pairwiseHammingDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "he";
+  s2 = "he";
+  length = 2;
+  expected = 4;
+  result = pairwiseHammingDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = pairwiseHammingDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "he";
+  s2 = "hd";
+  length = 2;
+  expected = 5;
+  result = pairwiseHammingDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = pairwiseHammingDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  s1 = "hello";
+  s2 = "hemlo";
+  length = 5;
+  expected = 59;
+  result = pairwiseHammingDistance(s1, s2, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = pairwiseHammingDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
+bool testPairwiseHammingDistanceRandom1() {
+  char *s1 = "d";
+  char *s2 = "z";
+  int length = 1;
+  int result = pairwiseHammingDistance(s1, s2, length);
+  int expected = 1;
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = pairwiseHammingDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
+bool testPairwiseHammingDistanceRandom2() {
+  char *s1 = "dz";
+  char *s2 = "aa";
+  int length = 2;
+  int result = pairwiseHammingDistance(s1, s2, length);
+  int expected = 6;
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = pairwiseHammingDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
+bool testPairwiseHammingDistanceRandom3() {
+  char *s1 = "aaaa";
+  char *s2 = "atau";
+  int length = 4;
+  int result = pairwiseHammingDistance(s1, s2, length);
+  int expected = 18;
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = pairwiseHammingDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s2, s1));
+
+  return true;
+}
+
+bool testPairwiseHammingDistanceRandom4() {
+  char *s1 = "fff";
+  char *s2 = "zgf";
+  int length = 3;
+  int result = pairwiseHammingDistance(s1, s2, length);
+  int expected = 11;
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s1, s2));
+  result = pairwiseHammingDistance(s2, s1, length);
+  Test_ensureEqualIntMsg(expected, result, PAIRWISE_HAMMING_DISTANCE_VA_ARGS_MSG(s2, s1));
 
   return true;
 }
@@ -1041,6 +1177,13 @@ int main(int argc, char *argv[]) {
   Test_run(*testRotRelativeDistanceRandom4, "testRotRelativeDistanceRandom4");
   Test_run(*testRotRelativeDistanceRegression1, "testRotRelativeDistanceRegression1");
   Test_run(*testRotRelativeDistanceRegression2, "testRotRelativeDistanceRegression2");
+
+  Test_run(*testPairwiseHammingDistanceZero, "testPairwiseHammingDistanceZero");
+  Test_run(*testPairwiseHammingDistanceOneLetterDiffer, "testPairwiseHammingDistanceOneLetterDiffer");
+  Test_run(*testPairwiseHammingDistanceRandom1, "testPairwiseHammingDistanceRandom1");
+  Test_run(*testPairwiseHammingDistanceRandom2, "testPairwiseHammingDistanceRandom2");
+  Test_run(*testPairwiseHammingDistanceRandom3, "testPairwiseHammingDistanceRandom3");
+  Test_run(*testPairwiseHammingDistanceRandom4, "testPairwiseHammingDistanceRandom4");
 
   // `closest_string.h` group
   Test_group("Closest String: closest_strings");

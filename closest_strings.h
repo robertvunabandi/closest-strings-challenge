@@ -29,12 +29,19 @@ typedef struct ClosestStringResult {
  * - for each `word` in `words`, strnlen(word) = m
  * - the return value of the distance function is >= 0
  * - for distance(s1, s2, q), strnlen(s1) == strnlen(s2) == q
+ * - distance is symmetric: distance(s1, s2, m) = distance(s2, s1, m)
  *
  * Postcondition (result placed inside `csr`):
  * If `r` is the result of this call, then :
  * - distance(r->s, word, m) <= r->k for all `word` in `words`
  * - for all other length-`m` string `s`, there does not exist `word` in `words`
  *   such that distance(s, word, m) < r->k
+ *
+ * NOTE:
+ * Outside of the symmetry property nothing else can be assumed about the way
+ * the distance function works. In other words, one cannot assume that it
+ * computes the distance by summing up the distances of each character
+ * against each other.
  */
 void closest_string(
   char **words,
