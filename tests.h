@@ -7,7 +7,9 @@
 #include "./colors.h"
 #include "./util.h"
 
+#include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #define PASSED_EXIT_CODE 0
 #define FAILED_EXIT_CODE 1

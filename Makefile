@@ -15,6 +15,8 @@ LDFLAGS :=
 
 # put headers here
 HEADERS := cs.h util.h closest_strings.h distances.h tests.h colors.h alphabet.h
+TEST_HEADERS := $(shell ls | grep "_tests.h" 2> /dev/null)
+HEADERS += $(TEST_HEADERS)
 
 # If you add a new file called "filename.c", add
 # "filename.o \" to this list.
@@ -47,7 +49,7 @@ tests: $(OBJS) $(TEST_OBJS)
 # compile objects
 
 # pattern rule for building objects
-%.o: %.c .cflags
+%.o: %.c .cflags $(HEADERS)
 	$(CC) $(CFLAGS) -c $*.c -o $@
 
 clean:
