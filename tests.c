@@ -1128,6 +1128,100 @@ bool testClosestStringsRotRelativeDistance2() {
   return true;
 }
 
+bool testClosestStringsPairwiseHammingDistance1() {
+  char *words[] = {"aaaa", "bbbb"};
+  const int num_words = 2;
+  const int m = 4;
+
+  int expected_k = 18;
+  int expected_m = 4;
+  int expected_length = expected_m;
+  char *expected_s_set[] = {"bbaa", "aabb"};
+  const int expected_s_set_length = 2;
+
+  ClosestStringResult *csr = CSR_allocate(m);
+  int result_k;
+  int result_m;
+  int result_length;
+  char result_s[LARGE_ENOUGH_STRING_SIZE] = "";
+  closest_string(words, num_words, m, &pairwiseHammingDistance, csr);
+  result_k = csr->k;
+  result_m = csr->m;
+  result_length = strlen(csr->s);
+  strcpy(result_s, csr->s);
+  CSR_free(csr);
+
+  Test_ensureEqualIntMsg(
+    expected_k,
+    result_k,
+    CLOSEST_STRINGS_RESULT_K_VA_ARGS_MSG(expected_k, result_k)
+  );
+  Test_ensureEqualIntMsg(
+    expected_m,
+    result_m,
+    CLOSEST_STRINGS_RESULT_M_VA_ARGS_MSG(expected_m, result_m)
+  );
+  Test_ensureEqualIntMsg(
+    expected_length,
+    result_length,
+    CLOSEST_STRINGS_RESULT_LENGTH_VA_ARGS_MSG(expected_length, result_length)
+  );
+  Test_ensureStringInArrayMsg(
+    expected_s_set,
+    expected_s_set_length,
+    result_s,
+    CLOSEST_STRINGS_RESULT_S_IN_ARRAY_VA_ARGS_MSG(result_s)
+  );
+  return true;
+}
+
+bool testClosestStringsPairwiseHammingDistance2() {
+  char *words[] = {"aba", "aba"};
+  const int num_words = 2;
+  const int m = 3;
+
+  int expected_k = 5;
+  int expected_m = 3;
+  int expected_length = expected_m;
+  char *expected_s_set[] = {"aaa"};
+  const int expected_s_set_length = 1;
+
+  ClosestStringResult *csr = CSR_allocate(m);
+  int result_k;
+  int result_m;
+  int result_length;
+  char result_s[LARGE_ENOUGH_STRING_SIZE] = "";
+  closest_string(words, num_words, m, &pairwiseHammingDistance, csr);
+  result_k = csr->k;
+  result_m = csr->m;
+  result_length = strlen(csr->s);
+  strcpy(result_s, csr->s);
+  CSR_free(csr);
+
+  Test_ensureEqualIntMsg(
+    expected_k,
+    result_k,
+    CLOSEST_STRINGS_RESULT_K_VA_ARGS_MSG(expected_k, result_k)
+  );
+  Test_ensureEqualIntMsg(
+    expected_m,
+    result_m,
+    CLOSEST_STRINGS_RESULT_M_VA_ARGS_MSG(expected_m, result_m)
+  );
+  Test_ensureEqualIntMsg(
+    expected_length,
+    result_length,
+    CLOSEST_STRINGS_RESULT_LENGTH_VA_ARGS_MSG(expected_length, result_length)
+  );
+  Test_ensureStringInArrayMsg(
+    expected_s_set,
+    expected_s_set_length,
+    result_s,
+    CLOSEST_STRINGS_RESULT_S_IN_ARRAY_VA_ARGS_MSG(result_s)
+  );
+  return true;
+}
+
 // ---------------------------------------------------------------------------------
 
 //
@@ -1194,7 +1288,8 @@ int main(int argc, char *argv[]) {
   Test_run(*testClosestStringsRelativeDistance2, "testClosestStringsRelativeDistance2");
   Test_run(*testClosestStringsRotRelativeDistance1, "testClosestStringsRotRelativeDistance1");
   Test_run(*testClosestStringsRotRelativeDistance2, "testClosestStringsRotRelativeDistance2");
-
+  Test_run(*testClosestStringsPairwiseHammingDistance1, "testClosestStringsPairwiseHammingDistance1");
+  Test_run(*testClosestStringsPairwiseHammingDistance2, "testClosestStringsPairwiseHammingDistance2");
 
   // At the end, conclude the results of these tests
   return Test_conclude();
