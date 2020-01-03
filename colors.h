@@ -7,6 +7,7 @@
 // Colors for nice prints. Found many of these colors from these links:
 // https://stackoverflow.com/questions/1961209/making-some-text-in-printf-appear-in-green-and-red
 // http://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
+
 // Regular Colors
 #define C_RED ("\033[31m")     /* Red */
 #define C_BLUE ("\033[34m")    /* Blue */
