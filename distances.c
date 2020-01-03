@@ -10,41 +10,23 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-int hammingDistance(char *s1, char *s2, int m) {
-  // Time Complexity: m
-  int result = 0;
-  for (int i = 0; i < m; i++) {
-    if (s1[i] != s2[i]) {
-      result += 1;
-    }
-  }
-  return result;
-}
-
-typedef struct SortedChar {
-  char first;   // this appears before or same as `second` in the alphabet
-  char second;  // this appears same or after `first` in the alphabet
-} SortedChar;   // NOTE: these are for length up to ALPHABET_LENGTH
-SortedChar getSortedChar(char s1, char s2);
+//
+// First, defining functions to be used by the API functions in distance.h
+//
 
 /**
- * This is a forward reference. This computes the number of letters it takes
- * to go from `first` to `second` in the alphabet. In case second appears
- * before first in the alphabet, it will wrap around and compute the distance
- * from `first` to "z" + 1 + distance from "a" to `second`. Each character
- * counts as 1.
+ * A data structure to hold two characters in sorted order using the
+ * ALPHABET defined in `alphabet.h` for ordering.
+ * 
+ * Invariants:
+ * - Both `first` and `second` appear in the ALPHABET
+ * - `first` appears before or in the same place as `second` in the ALPHABET
+ * - `second` appears after or in the same place as `first` in the ALPHABET
  */
-int relativeCharDistance(char first, char second);
-
-int relativeDistance(char *s1, char *s2, int m) {
-  // Time Complexity: m * (getSortedChar + relativeCharDIstance)
-  int result = 0;
-  for (int i = 0; i < m; i++) {
-    SortedChar sc = getSortedChar(s1[i], s2[i]);
-    result += relativeCharDistance(sc.first, sc.second);
-  }
-  return result;
-}
+typedef struct SortedChar {
+  char first;
+  char second;
+} SortedChar;
 
 /**
  * This method is very self explanatory.
@@ -83,17 +65,12 @@ SortedChar getSortedChar(char s1, char s2) {
   return (SortedChar) {.first = first, .second = second};
 }
 
-int rotRelativeDistance(char *s1, char *s2, int m) {
-  // Time Complexity: 2 * m * relativeCharDistance
-  int result = 0;
-  for (int i = 0; i < m; i++) {
-    int foward = relativeCharDistance(s1[i], s2[i]);
-    int backward = relativeCharDistance(s2[i], s1[i]);
-    result += foward < backward ? foward : backward;
-  }
-  return result;
-}
-
+/**
+ * This computes the number of letters it takes to go from `first` to `second` 
+ * in the alphabet. In case second appears before first in the alphabet, it 
+ * will wrap around and compute the distance from `first` to "z" + 1 + distance 
+ * from "a" to `second`. Each character counts as 1.
+ */
 int relativeCharDistance(char first, char second) {
   // Time Complexity: WRAPPED_ALPHABET_LENGTH
   int firstIdx = -1;
@@ -123,6 +100,42 @@ int relativeCharDistance(char first, char second) {
   assert(secondIdx != -1);
   int result = secondIdx - firstIdx;
   assert(result >= 0);
+  return result;
+}
+
+//
+// Definitions for the API in distance.h
+//
+
+int hammingDistance(char *s1, char *s2, int m) {
+  // Time Complexity: m
+  int result = 0;
+  for (int i = 0; i < m; i++) {
+    if (s1[i] != s2[i]) {
+      result += 1;
+    }
+  }
+  return result;
+}
+
+int relativeDistance(char *s1, char *s2, int m) {
+  // Time Complexity: m * (getSortedChar + relativeCharDIstance)
+  int result = 0;
+  for (int i = 0; i < m; i++) {
+    SortedChar sc = getSortedChar(s1[i], s2[i]);
+    result += relativeCharDistance(sc.first, sc.second);
+  }
+  return result;
+}
+
+int rotRelativeDistance(char *s1, char *s2, int m) {
+  // Time Complexity: 2 * m * relativeCharDistance
+  int result = 0;
+  for (int i = 0; i < m; i++) {
+    int foward = relativeCharDistance(s1[i], s2[i]);
+    int backward = relativeCharDistance(s2[i], s1[i]);
+    result += foward < backward ? foward : backward;
+  }
   return result;
 }
 

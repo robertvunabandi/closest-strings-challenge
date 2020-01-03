@@ -70,12 +70,14 @@ void Test_fail(char *test_f_name);
  */
 bool Test_conclude();
 
-///
-/// Testing Macros:
-/// Instead of using "assert", we're using "ensure" because these
-/// macros don't actually "assert" anything. They check that they
-/// match and if they don't, we return false.
-///
+//
+// Testing Macros:
+// Instead of using "assert", we're using "ensure" because these
+// macros don't actually "assert" anything. They check that they
+// match and if they don't, they return false. However, these can
+// generally be used the same way one would use `assert` statements
+// in other programming languages when testing.
+//
 
 #define Test_ensureTrue(boolean) {                                           \
   if (!boolean) {                                                            \

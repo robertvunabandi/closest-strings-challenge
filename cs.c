@@ -249,6 +249,17 @@ void runBenchmark(
   CSR_free(csr);
 }
 
+/**
+ * The main function. This takes in the program arguments and runs them
+ * as specified. Run with flags `--help` for information on how to run
+ * this.
+ *
+ * @param argc - number of arguments given
+ * @param argv - an array of length argc of arguments given to the program.
+ *               the flag `-w` or `--words` must be given, and it must be
+ *               followed by at least one word of length m. This flag cannot
+ *               be passed in twice.
+ */
 int main(int argc, char **argv) {
   // Check to see if the help flag was given and display help
   // and exit if given.

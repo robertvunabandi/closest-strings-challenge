@@ -15,14 +15,18 @@
 
 //
 // How to Test:
-// Here's how testing this works. Write a function that
-// takes no parameter and returns a boolean. That function
-// is a test, so by convention, name it something like
-// "test<TrueTestName>". Then, scroll all the way to the
-// `main(int argc, char *argv[])` function section and add
-// the line `Test_run(*test<TrueTestName>, "test<TrueTestName>")`
-// wherever appropriate.
+// Here's how testing this works. Write a function that takes no parameter
+// and returns a boolean. That function is a test, so by convention, name
+// it something like "test<TrueTestName>". Then, scroll all the way to the
+// `main(int argc, char *argv[])` function section and add the line
+// `Test_run(*test<TrueTestName>, "test<TrueTestName>")` wherever appropriate.
 //
+
+/// TODO: THIS FILE IS HUGE. It should be broken down. Here's an idea.
+/// Run the tests inside tests.c just like now. However, define the tests
+/// in a different file. E.g., inside distances_tests.c. Issue is that we'd
+/// have to write a header for each test file. What if they are included only
+/// once?
 
 // Here's a sample test that always passes.
 bool testSampleTest() {
