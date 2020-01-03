@@ -14,7 +14,14 @@ CFLAGS := -std=gnu11 -g -Wall
 LDFLAGS := 
 
 # put headers here
-HEADERS := cs.h util.h closest_strings.h distances.h tests.h colors.h alphabet.h
+HEADERS := \
+		alphabet.h \
+		closest_strings.h \
+		colors.h \
+		cs.h \
+		distances.h \
+		tests.h \
+		util.h
 TEST_HEADERS := $(shell ls | grep "_tests.h" 2> /dev/null)
 HEADERS += $(TEST_HEADERS)
 
