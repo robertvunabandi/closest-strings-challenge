@@ -11,3 +11,6 @@ tests
 
 # ignore pycache
 **/__pycache__/*
+
+# personal notes
+.personal
