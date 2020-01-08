@@ -51,16 +51,16 @@ class CSRunResult:
     ]
 
     def __init__(self, run_stdout: str) -> None:
-        lines = run_stdout.splitlines()
-        CSRunResult._remove_non_result_lines(lines)
+        lines = CSRunResult._remove_non_result_lines(run_stdout.splitlines())
         self._result_lines = lines
         self._results = self._extract_results()
 
     @staticmethod
-    def _remove_non_result_lines(lines: List[str]) -> None:
-        while not lines[0].startswith("> Benchmarking"):
-            lines.pop(0)
-        return lines
+    def _remove_non_result_lines(lines: List[str]) -> List[str]:
+        first_idx = 0
+        while not lines[first_idx].startswith("> Benchmarking"):
+            first_idx += 1
+        return lines[first_idx:]
 
     def _extract_results(self) -> List[Tuple[CS_DistFunc, CS_TimeSec, CS_K, CS_S]]:
         overall: List[Tuple[CS_DistFunc, CS_TimeSec, CS_K, CS_S]] = []
