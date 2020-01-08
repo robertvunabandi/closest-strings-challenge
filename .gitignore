@@ -8,3 +8,6 @@
 # ignore binaries (must add manually)
 cs
 tests
+
+# ignore pycache
+**/__pycache__/*
