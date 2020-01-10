@@ -10,7 +10,7 @@ import sys
 import tempfile
 import traceback
 
-from typing import List, Tuple
+from typing import Dict, List, Tuple, Union
 
 from py import utils as U
 
@@ -70,11 +70,36 @@ class CSRunResult:
             for metric_label, metric_idx, metric_type in CSRunResult.METRICS:
                 line = result_lines[metric_idx].strip()
                 metric_raw_value = line[len(metric_label):]
+                if metric_label == CSRunResult.TimeSec_label or metric_label == CSRunResult.DistFunc_label:
+                    metric_raw_value = metric_raw_value[:-1]
                 metric_value = metric_type(metric_raw_value)
                 result.append(metric_value)
             overall.append(tuple(result))
         # sort by distance_function name, which is at index 0
         return sorted(overall, key=lambda t: t[0])
+
+    def __iter__(self):
+        for (dist_func, time_sec, k, s) in self._results:
+            yield (dist_func, time_sec, k, s)
+
+
+METRIC_AVG = "avg"
+DECIMAL_PLACES = 5
+
+class MetricValues:
+    def __init__(self, values: List[Union[int, float]]) -> None:
+        self.avg = self.compute_average(values)
+        self.tot = sum(values)
+
+    def get_metric(self, metric_name: str) -> None:
+        if metric_name == METRIC_AVG:
+            return round(self.avg, DECIMAL_PLACES)
+
+        raise ValueError(f"metric {metric_name} is not yet implemented")
+
+    @staticmethod
+    def compute_average(values: List[Union[int, float]]) -> float:
+        return sum(values) / len(values)
 
 ##
 ## Functions
@@ -114,8 +139,16 @@ def make_words(num_words: int, num_letters: int, style: str) -> List[str]:
 
 
 def extract_results_from_program_run(num_letters: int, words: List[str]) -> CSRunResult:
-    # TODO - write this function
-    raise NotImplementedError
+    try:
+        result = subprocess.run(
+            ["./cs", "-l", str(num_letters), "-w", *words],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL
+        )
+    except subprocess.CalledProcessError as cpe:
+        print(U.in_red(cpe))
+        sys.exit(EXIT_CODE_FAILURE)
+    return CSRunResult(result.stdout.decode())
 
 
 ##
@@ -138,15 +171,57 @@ def run_benchmark(
     This returns an exit code, which is EXIT_CODE_SUCCESS when everything
     runs without any error.
     """
-    aggregated_max_time = None
+    aggregated_max_time = -1 
     num_letters = STARTING_NUM_LETTERS
-    output_columns: List[Tuple[str, ...]] = []
-    while aggregated_max_time is None or aggregated_max_time < max_time:
+    # run the program until we exceed the max time required. If any run exceeds
+    # the max time, then we will automatically stop. We will collect them in 
+    # this dictionary that maps num_letters to a dictionary that maps distance
+    # function to MetricValues.
+    overall_results: Dict[int, Dict[str, MetricValues]] = {}
+    while aggregated_max_time == -1 or aggregated_max_time < max_time:
+        aggregated_max_time = 0
         words = make_words(num_words, num_letters, style)
-        program_results = [
-            extract_results_from_program_run(num_letters, words) for _ in range(repeat)
-        ]
-    return EXIT_CODE_FAILURE 
+        result_for_dist_function: Dict[int, List[Union[int, float]]] = {}
+        should_break = False
+        for run_round in range(repeat):
+            print(f"running {run_round}, {num_letters=}, {words=}")
+            results: CSRunResult = extract_results_from_program_run(num_letters, words)
+            for dist_function, time, _, _ in results:
+                if time > max_time:
+                    should_break = True
+                    break
+                result_for_dist_function.setdefault(dist_function, []).append(time)
+            if should_break:
+                break
+        if should_break:
+            break
+        overall_results[num_letters] = {}
+        for dist_func, times in result_for_dist_function.items():
+            overall_results[num_letters][dist_func] = MetricValues(times)
+            aggregated_max_time = max(aggregated_max_time, overall_results[num_letters][dist_func].tot)
+        num_letters += 1
+    # TODO: now, print the results out. grab the distance functions for the
+    # first thing in the overall results (there should be at least one) and
+    # metrics are actual fields in MetricValues.
+    metrics = [METRIC_AVG]
+    dist_functions = [dist_func for dist_func in overall_results[next(iter(overall_results))]]
+    rows = [["num_letters"]]
+    row_idx_map: Dict[str, Dict[str, int]] = {}
+    for df in dist_functions:
+        for m in metrics:
+            row_idx_map.setdefault(df, {})[m] = len(rows)
+            v = f"{df}.{m}"
+            rows.append([v])
+    for num_letters in sorted(overall_results):
+        rows[0].append(str(num_letters))
+        for distance_func in overall_results[num_letters]:
+            metric_values = overall_results[num_letters][distance_func]
+            for metric in metrics:
+                idx = row_idx_map[distance_func][metric]
+                rows[idx].append(str(metric_values.get_metric(metric)))
+    for row in rows:
+        print(" ".join(row))
+    return EXIT_CODE_SUCCESS 
 
 ##
 ## Defining the Parser
@@ -157,7 +232,7 @@ USAGE = """
 DEFAULT_REPEAT = 20
 MIN_REPEAT = 1
 DEFAULT_MAX_TIME_SEC = 60
-MIN_TIME_SEC = 5
+MIN_TIME_SEC = 1
 MIN_NUM_WORDS = 2
 
 
@@ -243,6 +318,7 @@ if __name__ == "__main__":
             f"given ({max_time}) is invalid."
         ))
         max_time = MIN_TIME_SEC
+    max_time = round(max_time)
     style = args.style
     num_words = args.num_words
     verbose = args.verbose
