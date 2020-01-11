@@ -62,10 +62,10 @@ actually be able to compare different optimizations that they've made over time.
 To do so, simply do the following:
 
 1. Copy the final output
-  ![Step 1](./assets/step-1)
+  ![Step 1](assets/step-1)
 2. Paste it into Google Sheets, click on the drop down, and select "Split text to columns"
-  ![Step 2](./assets/step-2)
+  ![Step 2](assets/step-2)
 3. Click on the "separator" dropdown, and choose "Space"
-  ![Step 3](./assets/step-3)
+  ![Step 3](assets/step-3)
 4. The final output should look like this:
-  ![Step 4](./assets/step-4)
+  ![Step 4](assets/step-4)
