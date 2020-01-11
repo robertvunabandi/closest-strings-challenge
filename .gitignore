@@ -1,6 +1,7 @@
 .cflags
 
 .vscode
+**/.DS_Store
 
 # ignore all output files
 *.o

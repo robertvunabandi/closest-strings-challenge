@@ -295,7 +295,7 @@ if __name__ == "__main__":
         metavar=f"[{MIN_NUM_WORDS}-{len(ALPHABET)}]",
         help=(
             f"The number of words to have. Must be in the range [{MIN_NUM_WORDS}, "
-            f"{len(ALPHABET)}]."
+            f"{len(ALPHABET)}]. This is be default `{MIN_NUM_WORDS}`."
         ),
     )
     parser.add_argument(
