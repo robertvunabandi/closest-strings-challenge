@@ -80,6 +80,7 @@ class CSRunResult:
 METRIC_AVG = "avg"
 DECIMAL_PLACES = 5
 
+
 class MetricValues:
     def __init__(self, values: List[Union[int, float]]) -> None:
         self.avg = self.compute_average(values)
