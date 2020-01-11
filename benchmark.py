@@ -1,14 +1,8 @@
 #!/usr/local/bin/python3.8
 import argparse
-import json
-import logging
-import os
 import random
-import re
 import subprocess
 import sys
-import tempfile
-import traceback
 
 from typing import Dict, List, Tuple, Union
 
@@ -173,6 +167,7 @@ def run_benchmark(
     """
     aggregated_max_time = -1 
     num_letters = STARTING_NUM_LETTERS
+    v_nl = "\n" if verbose else ""
     # run the program until we exceed the max time required. If any run exceeds
     # the max time, then we will automatically stop. We will collect them in 
     # this dictionary that maps num_letters to a dictionary that maps distance
@@ -183,8 +178,11 @@ def run_benchmark(
         words = make_words(num_words, num_letters, style)
         result_for_dist_function: Dict[int, List[Union[int, float]]] = {}
         should_break = False
+        print(f"{v_nl}NOW USING {num_letters} LETTER WORDS:{v_nl}")
         for run_round in range(repeat):
-            print(f"running {run_round}, {num_letters=}, {words=}")
+            if verbose:
+                program_args = f"`./cs -l {num_letters} -w {' '.join(words)}`"
+                print(f"  running {program_args} (round {run_round + 1}/{repeat})")
             results: CSRunResult = extract_results_from_program_run(num_letters, words)
             for dist_function, time, _, _ in results:
                 if time > max_time:
@@ -194,16 +192,19 @@ def run_benchmark(
             if should_break:
                 break
         if should_break:
+            print("  ...aborting because a run took more than the maximum allowed time...")
             break
         overall_results[num_letters] = {}
         for dist_func, times in result_for_dist_function.items():
             overall_results[num_letters][dist_func] = MetricValues(times)
             aggregated_max_time = max(aggregated_max_time, overall_results[num_letters][dist_func].tot)
         num_letters += 1
-    # TODO: now, print the results out. grab the distance functions for the
-    # first thing in the overall results (there should be at least one) and
+    # Now, print the results out.
+    print("\nOUTPUTING RESULTS:\n")
     # metrics are actual fields in MetricValues.
     metrics = [METRIC_AVG]
+    # grab the distance functions from the first key's value in 
+    # `overall_results` (there should be at least one key)
     dist_functions = [dist_func for dist_func in overall_results[next(iter(overall_results))]]
     rows = [["num_letters"]]
     row_idx_map: Dict[str, Dict[str, int]] = {}
@@ -228,6 +229,13 @@ def run_benchmark(
 ##
 
 USAGE = """
+Runs the `./cs` program with the given arguments and outputs a table result
+for how long the program took with each number of letters. The final output
+is a space-separated table where the values of the first row are the 
+number of letter and the values of the rest of the rows are the average
+times the program took to run. This can be easily pasted into Google Sheets
+for nicer UI. See README for more details on the final output. NOTE: make 
+sure to run `make` before running this script.
 """
 DEFAULT_REPEAT = 20
 MIN_REPEAT = 1
@@ -295,9 +303,9 @@ if __name__ == "__main__":
         "--verbose",
         action="store_true",
         help=(
-            "This will simply make the program print more things."
-            # TODO: write what verbose truly does in the following vain.
-            # "More specifically, the following events will be printed:"
+            "This will simply make the program print more things. "
+            "More specifically, each time the ./cs program actually runs, "
+            "it will print out the arguments it's running with."
         ),
     )
     args = parser.parse_args()
@@ -323,5 +331,13 @@ if __name__ == "__main__":
     num_words = args.num_words
     verbose = args.verbose
 
-    print(args)
+    # print out the arguments
+    print("\nPROGRAM ARGUMENTS:\n")
+    print(f"  Maximum Time: {max_time} second{'s' if max_time > 1 else ''}")
+    print(f"  Style: {style}")
+    print(f"  Number of Words: {num_words}")
+    print(f"  Verbosity: {str(verbose).lower()}")
+    # just for printing and consistent printing purposes...
+    if not verbose:
+        print()
     sys.exit(run_benchmark(repeat, max_time, style, num_words, verbose=verbose))
