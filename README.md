@@ -69,3 +69,19 @@ To do so, simply do the following:
   ![Step 3](assets/step-3.png)
 4. The final output should look like this:
   ![Step 4](assets/step-4.png)
+
+### Easy Benchmarking
+
+We have defined a few targets in the Makefile that can be used to run benchmarks.
+
+- `make benchmark-simple`  
+  Runs a benchmark with 3 words using the `SIMPLE` style.
+- `make benchmark-vary`  
+  Runs a benchmark with 3 words using the `VARY` style.
+- `make benchmark-random`  
+  Runs a benchmark with 3 words using the `RANDOM` style.
+
+In addition, these scripts will run `make clean` and `make` to ensure they run
+against the latest version. Finally, for all of these, one may also add `VERBOSE=1` 
+to run the benchmark scripts with the `--verbose` flag. E.g., 
+`make benchmark-vary VERBOSE=1`.

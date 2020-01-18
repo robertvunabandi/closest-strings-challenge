@@ -61,3 +61,23 @@ tests: $(OBJS) $(TEST_OBJS)
 
 clean:
 	$(RM) $(TARGETS) $(OBJS) $(TEST_OBJS) *.pyc
+
+BENCHMARK_VERBOSE := 
+ifeq ($(VERBOSE), 1)
+	BENCHMARK_VERBOSE += -v
+endif
+
+benchmark-simple:
+	make clean
+	make
+	./benchmark.py -mt 60 -r 15 -s SIMPLE -nw 3 $(BENCHMARK_VERBOSE)
+
+benchmark-vary:
+	make clean
+	make
+	./benchmark.py -mt 60 -r 15 -s VARY -nw 3 $(BENCHMARK_VERBOSE)
+
+benchmark-random:
+	make clean
+	make
+	./benchmark.py -mt 60 -r 15 -s RANDOM -nw 3 $(BENCHMARK_VERBOSE)
