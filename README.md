@@ -28,6 +28,70 @@ So, it may be more difficult.
 
 ## Running this Program
 
+To run the program, first compile it via running `make cs` (or just `make`), and 
+then one can run `./cs -l LENGTH -w WORD1 WORD2 WORD3 ...`. This, in terms of 
+the formal definition above, will define `M` as the passed in `LENGTH` and the 
+set `S` as `{WORD1, WORD2, WORD3, ...}`. 
+
+Here's an example of a run of the program:
+
+```bash
+$ ./cs -l 2 -w ax by cz da eb
+== RUNNING CLOSEST STRING PROGRAM ==
+
+M:         2
+num_words: 5
+words:     {ax, by, cz, da, eb}
+
+> Benchmarking hammingDistance:
+    time: 0.000115s
+    results:
+      k: 2
+      m: 2
+      s: aa
+> Benchmarking relativeDistance:
+    time: 0.000347s
+    results:
+      k: 13
+      m: 2
+      s: cm
+> Benchmarking rotRelativeDistance:
+    time: 0.000583s
+    results:
+      k: 4
+      m: 2
+      s: ba
+> Benchmarking pairwiseHammingDistance:
+    time: 0.000123s
+    results:
+      k: 6
+      m: 2
+      s: aa
+```
+
+Which simply outputs how long it takes to find the closest string `s` for 
+each given distance function, the resulting `k` for that word, and its 
+length `m` (which is always the same as the one given as argument to the 
+program). Distance functions are simply functions from one string to another 
+string of equal length. These functions return integers. We have four 
+distance functions:
+- `hammingDistance`  
+  This is simply the number of character replacements it takes to convert 
+  one string into another
+- `relativeDistance`  
+  Relative distance is also the number of replacements, except the cost of 
+  replacements is the number of rotations it takes in the alphabet to go 
+  from the first string to the second string. If we reach the end of the 
+  alphabet, this simply wraps around.
+- `rotRelativeDistance`  
+  Same as relative distance except we can go backward, and we take the 
+  shortest distance.
+- `pairwiseHammingDistance`  
+  This distance function is defined the following way. For each character 
+  in the first word, look at each character in the second word, and if they 
+  differ, the cost is increased by how far the characters are from each 
+  other plus 1. More details in `distances.h`.
+
 ## Benchmarking
 
 To benchmark this script, simply run the `benchmark.py` script.
