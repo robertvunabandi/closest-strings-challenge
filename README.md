@@ -26,6 +26,24 @@ by solving for the smallest `k` and returning the boolean `k' >= k`. In fact,
 the way we solve it solves a harder problem, which is to find the smallest `k`.
 So, it may be more difficult.
 
+## The Contract & Testing
+
+One can optimize any parts of this projects as long as they pass all the tests
+in this entire program. To run tests, simply do the following:
+
+```bash
+$ make tests
+$ ./tests
+```
+
+It is highly encouraged to test any newly added code for correctness and 
+faster iterations. For more details on how to write tests, simply take a look 
+at `tests.h` which defines a lot of the testing methods. Then, `tests.c` runs
+the tests. Tests can be written either in the `tests.c` or preferably in a 
+file that defines them (such at `util_tests.h`). **When a test file is defined** 
+**this way, it can only be included into `tests.c`** (or otherwise there will be
+compile-time error).
+
 ## Running this Program
 
 To run the program, first compile it via running `make cs` (or just `make`), and 
@@ -75,18 +93,18 @@ length `m` (which is always the same as the one given as argument to the
 program). Distance functions are simply functions from one string to another 
 string of equal length. These functions return integers. We have four 
 distance functions:
-- `hammingDistance`  
+- **`hammingDistance`**  
   This is simply the number of character replacements it takes to convert 
   one string into another
-- `relativeDistance`  
+- **`relativeDistance`**  
   Relative distance is also the number of replacements, except the cost of 
   replacements is the number of rotations it takes in the alphabet to go 
   from the first string to the second string. If we reach the end of the 
   alphabet, this simply wraps around.
-- `rotRelativeDistance`  
+- **`rotRelativeDistance`**  
   Same as relative distance except we can go backward, and we take the 
   shortest distance.
-- `pairwiseHammingDistance`  
+- **`pairwiseHammingDistance`**  
   This distance function is defined the following way. For each character 
   in the first word, look at each character in the second word, and if they 
   differ, the cost is increased by how far the characters are from each 
