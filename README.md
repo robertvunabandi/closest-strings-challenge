@@ -31,7 +31,7 @@ So, it may be more difficult.
 To run the program, first compile it via running `make cs` (or just `make`), and 
 then one can run `./cs -l LENGTH -w WORD1 WORD2 WORD3 ...`. This, in terms of 
 the formal definition above, will define `M` as the passed in `LENGTH` and the 
-set `S` as `{WORD1, WORD2, WORD3, ...}`. 
+set `S` as `{WORD1, WORD2, WORD3, ...}`. To display the help, simply run `./cs -h`.
 
 Here's an example of a run of the program:
 
