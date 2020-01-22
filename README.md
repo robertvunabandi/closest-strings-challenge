@@ -6,7 +6,7 @@ optimizing this simple program as much as possible.
 
 ## Closest Strings
 
-For this code, we will use this following formal definition of the problem.
+For this program, we will use this following formal definition of the problem.
 
 Given `N` length `M` strings `S={s_1, s_2, ..., s_N}` and given a distance 
 function `distance` that takes two strings of length `M` as arguments and
