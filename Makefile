@@ -60,7 +60,9 @@ tests: $(OBJS) $(TEST_OBJS)
 	$(CC) $(CFLAGS) -c $*.c -o $@
 
 clean:
-	$(RM) $(TARGETS) $(OBJS) $(TEST_OBJS) *.pyc
+	$(RM) $(TARGETS) $(OBJS) $(TEST_OBJS) 
+	$(RM) -v py/__pycache__/*.pyc
+	rmdir py/__pycache__
 
 BENCHMARK_VERBOSE := 
 ifeq ($(VERBOSE), 1)
