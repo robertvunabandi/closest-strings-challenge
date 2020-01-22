@@ -20,6 +20,12 @@
  * THE SOFTWARE.
  */
 
+//
+// Test File Note:
+// Do not include this file (or any other test file)
+// anywhere except inside `tests.c`
+//
+
 #pragma once
 
 #include "./colors.h"
